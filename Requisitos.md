@@ -267,5 +267,77 @@ La organización principal que va a interactuar con este sistema es la propia em
 
 | Término            | Definición                                                                                                                                                   |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Factura recurrente | Tipo de factura configurada para que se notifique periódicamente al usuario de su pago (en este caso, mensual). Se puede ver como una "suscripción mensual". |
-| ...                | ...                                                                                                                                                          |
+| Factura | Documento comercial que acredita una operación de entrega de bienes o prestación de servicios e identifica, conforme a las reglas aplicables, al emisor, al destinatario, los conceptos, los importes y los impuestos. |
+| Factura rectificativa | Factura emitida para corregir una factura anterior en los supuestos establecidos por la normativa, identificando la factura rectificada y la causa de la corrección. |
+| Borrador de factura | Versión provisional de una factura que todavía no ha sido emitida definitivamente y cuyos datos pueden revisarse y modificarse antes de finalizarla. |
+| Estado de factura | Situación de una factura en su ciclo de vida, como borrador, pendiente de pago, pagada o anulada; sirve para conocer su progreso y determinar qué acciones admite. |
+| Serie de facturación | Código o identificador que agrupa una secuencia de facturas con numeración correlativa. La normativa establece series específicas para determinados documentos, como las facturas rectificativas. |
+| Factura recurrente | Factura generada y enviada de forma periódica conforme a un calendario previamente definido. La periodicidad puede ser mensual, trimestral o anual; emitirla no implica que el cobro se haya realizado. |
+| Prorrateo | Cálculo proporcional del importe que corresponde cobrar por la parte de un periodo de servicio, en vez de por el periodo completo. |
+| Factura puntual | Factura emitida por una operación concreta que no genera, por sí misma, nuevas facturas periódicas. |
+| Suscripción | Relación de contratación continuada por la que se ofrece acceso a un producto o servicio durante periodos sucesivos, normalmente asociados a una cuota y un ciclo de facturación. |
+| Facturación automatizada | Uso de un sistema informático para realizar tareas del proceso de facturación, como calcular importes, generar documentos o programar su envío, sin repetir manualmente cada operación. |
+| Impago | Situación en la que la cantidad exigible de una factura no se ha abonado cuando termina el plazo de pago aplicable. |
+| Seguimiento de cobros | Conjunto de comprobaciones y acciones para conocer si una factura se ha pagado, identificar saldos pendientes y gestionar avisos o revisiones hasta resolver el cobro. |
+| Fecha de vencimiento | Fecha límite establecida para que el cliente efectúe el pago de una factura según las condiciones pactadas. |
+| Recordatorio de pago | Comunicación dirigida al cliente para advertirle de un importe pendiente antes de su vencimiento o reclamarlo cuando ya está vencido. |
+| Pasarela de pago | Servicio tecnológico que transmite de forma segura la información necesaria para autorizar y tramitar pagos electrónicos entre el cliente, el comercio y los proveedores financieros. |
+| Rango de facturación | Intervalo de valores del volumen de facturación de una empresa utilizado como criterio para clasificarla en un nivel de tarifa o precio. |
+| Datos fiscales | Información identificativa y tributaria relevante para documentar una operación, como razón social, número de identificación fiscal y domicilio cuando corresponda. |
+| NIF | Número de Identificación Fiscal utilizado para identificar a personas y entidades ante la Administración tributaria española. |
+| Razón social | Nombre o denominación jurídica que identifica formalmente a una entidad y puede figurar en sus documentos fiscales. |
+| PDF | Formato de documento portátil diseñado para presentar e intercambiar archivos preservando su representación con independencia del dispositivo o programa utilizado. |
+| Base de datos | Conjunto organizado de datos almacenados digitalmente y gestionados de forma que puedan consultarse, actualizarse y protegerse. |
+| Borrado lógico | Procedimiento por el que un registro se marca como eliminado o inactivo sin suprimir inmediatamente su información almacenada. No equivale necesariamente a la supresión definitiva de datos. |
+| Archivo CSV | Archivo de texto para representar datos tabulares con un registro por línea y campos separados por delimitadores, habitualmente comas. |
+| Dashboard o panel de control | Interfaz que reúne indicadores, gráficos y otra información relevante para supervisar el estado de una actividad o proceso. |
+| Autenticación o inicio de sesión | Proceso por el que un sistema comprueba la identidad que declara un usuario, por ejemplo, mediante una cuenta y su contraseña. |
+| Hash de contraseñas | Almacenamiento de contraseñas mediante una función criptográfica no reversible diseñada para verificarlas sin guardar su texto original; deben emplearse algoritmos apropiados, como Argon2id o bcrypt. |
+| Autorización | Comprobación de las acciones y recursos a los que una identidad previamente autenticada tiene derecho a acceder. |
+| Rol de usuario | Conjunto de responsabilidades o funciones al que se asocia un grupo definido de permisos dentro de un sistema. |
+| Permiso o privilegio | Autorización concreta para realizar una acción sobre un recurso, como consultar, crear, modificar o eliminar determinados datos. |
+| Control de acceso | Mecanismo que aplica reglas para determinar quién puede acceder a los recursos del sistema y qué operaciones puede realizar sobre ellos. |
+| Cifrado de datos | Transformación de información legible en una representación codificada que no puede interpretarse sin la clave o el procedimiento autorizado de descifrado. |
+| TLS | Protocolo criptográfico que protege los datos intercambiados entre sistemas a través de una red y contribuye a garantizar confidencialidad, integridad y autenticidad de la conexión. |
+| RGPD | Reglamento General de Protección de Datos de la Unión Europea, que establece reglas y principios para el tratamiento y la protección de datos personales. |
+| Periodo de conservación de datos | Tiempo durante el cual una organización mantiene determinada información de acuerdo con su finalidad y las obligaciones legales aplicables, antes de su supresión, bloqueo o anonimización cuando proceda. |
+| Historial de cambios | Registro ordenado de modificaciones realizadas sobre un dato o elemento, que permite consultar su evolución y, según el sistema, quién efectuó cada cambio. |
+| Auditoría de operaciones | Registro de acciones relevantes del sistema para poder comprobar qué ocurrió, quién realizó cada operación y en qué momento, facilitando la supervisión y la rendición de cuentas. |
+| Registro de actividad (log) | Secuencia de anotaciones sobre eventos y operaciones de una aplicación, generalmente acompañadas de marcas temporales, útil para investigar errores y supervisar el funcionamiento. |
+| Inmutabilidad | Propiedad de la información o de un registro que impide modificarlo después de haber quedado fijado, de modo que los cambios posteriores requieran nuevas anotaciones en lugar de sobrescribir el original. |
+| Trazabilidad | Capacidad para relacionar elementos y seguir su origen y evolución; en ingeniería de requisitos, permite conectar necesidades, requisitos, diseño y pruebas. |
+| Modularidad | Organización de un programa en componentes con responsabilidades diferenciadas, que cooperan mediante interfaces definidas y facilitan su comprensión o mantenimiento. |
+| Desacoplamiento | Principio de diseño que procura reducir las dependencias entre componentes, permitiendo modificar o sustituir uno con el menor impacto posible en los demás. |
+| Mantenibilidad | Grado de facilidad con que un sistema software puede analizarse, corregirse, modificarse o probarse para mantenerlo y mejorarlo. |
+| Software libre | Programa cuya licencia permite a los usuarios ejecutarlo, estudiar y modificar su código y distribuir copias originales o modificadas, respetando las condiciones de la licencia. |
+| Escalabilidad | Capacidad de un sistema para atender variaciones de carga o incrementos en la demanda sin perder de forma inaceptable su funcionamiento previsto. |
+| Procesamiento por lotes (batch) | Ejecución automática de un conjunto de tareas o registros, a menudo programada, que puede realizarse con poca intervención directa del usuario. |
+| Rendimiento | Característica de calidad que expresa cómo ejecuta un sistema sus funciones con determinados tiempos de respuesta y consumo de recursos. |
+| Fiabilidad | Capacidad de un sistema para desempeñar correctamente sus funciones bajo las condiciones establecidas y mantener el comportamiento esperado frente a problemas o fallos. |
+| Usabilidad | Grado en que una aplicación facilita a sus usuarios aprender a utilizarla y completar sus tareas de manera comprensible, eficaz y con un esfuerzo adecuado. |
+| Portabilidad | Capacidad de adaptar o trasladar un producto software a distintos entornos de hardware, software o ejecución. No es exactamente lo mismo que adaptar el tamaño de la interfaz a una pantalla. |
+| Diseño web responsivo (responsive) | Enfoque de desarrollo de interfaces web para que su presentación y comportamiento se adapten adecuadamente a dispositivos y tamaños de pantalla diferentes. |
+| Interfaz gráfica de usuario (GUI) | Parte visual de una aplicación mediante la que el usuario consulta información e interactúa con controles como ventanas, botones, menús o formularios. |
+| API | Interfaz de programación de aplicaciones: conjunto de reglas y operaciones que permite que unos programas consulten datos o utilicen funciones ofrecidas por otros. |
+| API REST | Interfaz de programación que sigue los principios de la arquitectura REST, normalmente exponiendo recursos identificados por direcciones y operados mediante métodos HTTP. |
+| OpenAPI | Especificación que permite describir de forma estandarizada las operaciones, entradas y respuestas de una API HTTP, con independencia del lenguaje de programación. |
+| Requisito de negocio | Necesidad, objetivo o resultado organizativo que justifica el desarrollo de una solución y orienta el valor que esta debe aportar. |
+| Requisito de usuario | Necesidad o capacidad esperada que se expresa desde la perspectiva de las personas que usarán el sistema. |
+| Requisito funcional | Condición que establece una función, servicio o comportamiento que el sistema debe proporcionar. |
+| Requisito no funcional | Condición relativa a características de calidad o restricciones del sistema, como seguridad, rendimiento, usabilidad o fiabilidad. |
+| Regla de negocio | Condición o directriz del ámbito de la organización que gobierna las decisiones o limita el comportamiento de los procesos, con independencia de su implementación informática. |
+| Criterio verificable | Condición observable o medible que permite comprobar mediante revisión o prueba si un requisito se cumple. |
+| Parte interesada (stakeholder) | Persona, grupo u organización que tiene interés en un proyecto, puede influir en sus resultados o verse afectada por ellos. |
+| Actor | Persona, grupo o sistema externo que interactúa con el software desempeñando un papel determinado para alcanzar un objetivo. |
+| Caso de uso | Descripción de una interacción entre un actor y un sistema orientada a alcanzar un objetivo concreto. |
+| UML | Lenguaje Unificado de Modelado: notación gráfica estandarizada para representar distintos aspectos de la estructura y el comportamiento de un sistema. |
+| Scrum | Marco de trabajo ligero mediante el que un equipo aborda problemas complejos y genera valor a través de ciclos de trabajo e inspección y adaptación. |
+| Sprint | Periodo de duración fija en Scrum durante el que el equipo trabaja para cumplir un objetivo y producir un incremento útil del producto. |
+| Sprint Planning | Evento que inicia un Sprint y en el que el equipo acuerda su objetivo, qué trabajo abordará y cómo pretende desarrollarlo. |
+| Sprint Retrospective | Evento al final del Sprint en el que el equipo examina su forma de trabajar y decide acciones para mejorar su calidad y eficacia. |
+| Scrum Master | Responsable de favorecer la comprensión y aplicación eficaz de Scrum y de ayudar a mejorar la efectividad del equipo. |
+| Product Owner | Responsable de maximizar el valor del producto y de gestionar eficazmente su lista priorizada de trabajo, el Product Backlog. |
+| Repositorio | Espacio en el que se guardan los archivos de un proyecto y, si está gestionado con Git, sus distintas versiones y el historial de cambios. |
+| Control de versiones | Práctica y conjunto de herramientas que registran los cambios en archivos y permiten comparar, recuperar y coordinar distintas versiones. |
+| Copia de seguridad (backup) | Copia independiente de datos o documentos que se conserva para poder recuperar información si los originales se pierden, se dañan o dejan de estar disponibles. |
+| Restauración de datos | Proceso de recuperar información o sistemas a partir de una copia de seguridad después de una pérdida, daño o fallo. |
