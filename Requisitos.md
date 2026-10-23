@@ -268,7 +268,7 @@ La organización principal que va a interactuar con este sistema es la propia em
 | BR-03                | RB-03, RB-04     | UR-01, UR-02         | FR-21, FR-39, FR-40, FR-42, FR-44, FR-48, FR-49, FR-50           |
 | BR-04                | RB-02, RB-03     | UR-01, UR-05         | FR-19, FR-25, FR-30, FR-31, NFR-05, NFR-09                       |
 | BR-05                | RB-03, RB-04     | UR-02, UR-07         | FR-55, FR-81, FR-82, NFR-12                                      |
-| BR-06                | —                | UR-09                | FR-78, FR-79, FR-80                                              |
+| BR-06                | x                | UR-09                | FR-78, FR-79, FR-80                                              |
 | BR-07                | RB-01, RB-07     | UR-03, UR-05         | FR-57, FR-58, FR-59, FR-64, FR-66, FR-85, NFR-03, NFR-06, NFR-10 |
 
 
@@ -278,7 +278,7 @@ La organización principal que va a interactuar con este sistema es la propia em
 
 | Término                   | Definición                                                                                                                                                    |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Factura recurrente**    | Factura generada y emitida automáticamente con periodicidad regular (mensual) correspondiente a la cuota de suscripción del cliente.                          |
-| **Factura puntual**       | Factura emitida de forma aislada para cobrar un servicio específico o adicional (instalación, formación, consultoría, etc.).                                  |
-| **Factura rectificativa** | Documento contable emitido para corregir o anular una factura previamente emitida que no puede ser modificada directamente por restricciones legales.         |
-| **Borrado lógico**        | Marcar un registro como inactivo o dado de baja en la base de datos sin eliminar físicamente sus datos, garantizando la conservación histórica y legal.       
+| **Factura recurrente**    | Factura generada y emitida automáticamente mensualmente calculada con la cuota de suscripción del cliente                          |
+| **Factura puntual**       | Factura emitida de forma aislada para cobrar un servicio específico o adicional                                  |
+| **Factura rectificativa** | Factura emitida para corregir o anular una factura previamente emitida que no puede ser modificada directamente por temas legales         |
+| **Borrado lógico**        | Marcar un registro como inactivo o dado de baja en la base de datos sin eliminar físicamente sus datos, garantizando la conservación histórica por motivos legales
