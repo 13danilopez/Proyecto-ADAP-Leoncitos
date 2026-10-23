@@ -1,4 +1,3 @@
-
 # Requisitos
 
 ## 1. Contexto y alcance
@@ -91,32 +90,106 @@ La organización principal que va a interactuar con este sistema es la propia em
 
 | ID    | Requisito                                                                                                                                                       | Relacionado con |
 | ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
-|       | **GESTIÓN DE DATOS**                                                                                                                                            |                 |
-| FR-01 | Almacenar a los clientes con sus datos necesarios (razón social, nombre de empresa, país, contacto, ...)                                                        | UR-...          |
-| FR-02 | Poder retirar de la base de datos a clientes registrados                                                                                                        | UR-...          |
-| FR-03 | Tener un historial de las facturas anteriores de cada cliente                                                                                                   | UR-...          |
-|       | ...                                                                                                                                                             |                 |
-|       | **SISTEMA DE NOTIFICACIÓN AL USUARIO**                                                                                                                          |                 |
-| FR-04 | Notificar al cliente recordando que tiene que pagar su suscripción al 3er y 5o día de confirmarlo                                                               | UR-...          |
-| FR-05 | Notificar al cliente de su impago tras el 5o día, con una frecuencia de 2-3 días                                                                                | UR-...          |
-| FR-06 | Notificaciones vía correo electrónico                                                                                                                           | UR-...          |
-|       | ...                                                                                                                                                             |                 |
-|       | **SISTEMA DE LOG-IN DE EMPLEADOS**                                                                                                                              |                 |
-| FR-07 | Sistema de Log-in con correo corporativo y contraseña proporcionados por TurbineH                                                                               |                 |
-|       | ...                                                                                                                                                             |                 |
-|       | **FUNCIONES DE LECTORES**                                                                                                                                       |                 |
-| FR-08 | Lectores deben poder generar facturas de una forma semi-automática, haciendo uso de una plantilla preestablecida                                                |                 |
-| FR-09 | Lectores deben tener acceso a todos los datos relevantes de sus clientes asignados (información de entidad, suscripciones actuales, historial de facturas, ...) |                 |
-| FR-10 | Lectores deben poder modificar los plazos y los métodos de pago                                                                                                 |                 |
-| FR-11 | Lectores deben tener acceso al panel dashboard de informes de facturación                                                                                       |                 |
-|       | ...                                                                                                                                                             |                 |
-|       | **FUNCIONES DE ADMINISTRADORES**                                                                                                                                |                 |
-| FR-12 | Administradores pueden generar perfiles de nuevos clientes                                                                                                      |                 |
-| FR-13 | Administradores pueden generar y gestionar facturas asignadas de los perfiles de usuarios lectores                                                              |                 |
-|       | ...                                                                                                                                                             |                 |
-|       | **FUNCIONES DEL SUPERADMINISTRADOR**                                                                                                                            |                 |
-| FR-14 | Superadministrador tiene acceso a opciones de configuración a nivel del sistema (máximo nivel de privilegios)                                                   |                 |
-| ...   | ...                                                                                                                                                             | ...             |
+|       | **GESTIÓN DE CLIENTES**                                                                                                                                         |                 |
+| FR-01 | El sistema permitirá dar de alta un cliente (empresa) con sus datos comerciales y fiscales: nombre, nombre comercial, razón social, NIF, dirección fiscal, país, moneda de trabajo y datos de contacto | UR-06 |
+| FR-02 | Los datos de contacto serán un email o teléfono                                                                                                                 | UR-06           |
+| FR-03 | El sistema deberá poder almacenar varios contactos de la empresa de cada cliente                                                                                 | UR-06           |
+| FR-04 | El sistema deberá mostrar varios datos de interés en la "ficha" de cada cliente: inicio de plan, tipo de plan, responsable comercial, condiciones de pago        | UR-03, UR-06    |
+| FR-05 | El sistema deberá poder adjuntar otros documentos firmados con el cliente fuera de la plataforma (acuerdo comercial)                                           | UR-06           |
+| FR-06 | Todo cliente o dato modificado se guardará inmediatamente y podrá editarse en cualquier momento posterior                                                       | UR-03, UR-06    |
+| FR-07 | El sistema asignará a cada cliente un rango de facturación anual, del que depende su cuota                                                                      | UR-06           |
+| FR-08 | Al dar de alta un cliente se indicará si su facturación es recurrente o no (puntual), junto con su rango de facturación y la cantidad                          | UR-06           |
+| FR-09 | El cliente tendrá un estado (activo, inactivo/pausa, baja solicitada, baja)                                                                                    | UR-06           |
+| FR-10 | Distinción entre plan de cliente en pausa (motivo, fecha prevista de reactivación) o de baja (baja de los servicios confirmada por empresa)                    | UR-06           |
+| FR-11 | El sistema permitirá etiquetar clientes de forma flexible (estratégico, beta, partner, riesgo de cobro, etc.). Diferente a los estados                         | UR-06           |
+| FR-12 | La baja de un cliente será un borrado lógico: sus datos se conservarán durante el plazo que permita la ley                                                     | UR-06           |
+| FR-13 | Al solicitar la baja, el sistema cancelará automáticamente la recurrencia y no generará nuevas facturas                                                       | UR-01, UR-06    |
+| FR-14 | Si el cliente tiene facturas impagadas, la baja no se completará: se le notificará y se mantendrá el flujo de seguimiento hasta que pague                       | UR-02, UR-06    |
+| FR-15 | Cada cliente tendrá un usuario de Turbine asignado como responsable                                                                                             | UR-03           |
+| FR-16 | El sistema permitirá importar clientes de forma masiva mediante un archivo CSV                                                                                  | UR-06           |
+|       | **GESTIÓN DE FACTURAS**                                                                                                                                         |                 |
+| FR-17 | El sistema permitirá crear facturas puntuales para un cliente                                                                                                   | UR-01, UR-08    |
+| FR-18 | El sistema permitirá crear facturas recurrentes (mensuales) para un cliente                                                                                    | UR-01, UR-08    |
+| FR-19 | El sistema permitirá crear una facturas rectificativas con los datos iniciales de la última factura emitida en caso de no poder modificarla por motivos legales| UR-01           |
+| FR-20 | El importe de una factura será editable únicamente en el momento de su creación (si es incorrecto se deberá crear una factura rectificadora)                  | UR-01           |
+| FR-21 | El plazo de pago por defecto de una factura será de 5 días desde su emisión                                                                                    | UR-01           |
+| FR-22 | Las facturas recurrentes se generarán y enviarán automáticamente entre el día 1 y 5 de cada mes                                                               | UR-01           |
+| FR-23 | Si un cliente se da de alta a mitad de mes, se emitirá una factura proporcional a los días restantes, y la siguiente el día 1                                 | UR-01           |
+| FR-24 | El sistema permitirá generar automáticamente un PDF de cada factura con un formato estandarizado                                                               | UR-01, UR-07    |
+| FR-25 | El contenido del PDF será idéntico al guardado en la aplicación y al enviado al cliente (no pueden haber incoherencias)                                         | UR-07           |
+| FR-26 | Las facturas se almacenarán en la base de datos y cada cliente tendrá su historial completo                                                                    | UR-07           |
+| FR-27 | Las facturas serán editables antes de la emisión de la misma con cambios trazables                                                                             | UR-01           |
+| FR-28 | Las facturas podrán ser descargadas en PDF por los usuarios                                                                                                    | UR-07           |
+| FR-29 | Cada factura tendrá un estado (pendiente, pagada, vencida/impagada)                                                                                             | UR-02, UR-08    |
+| FR-30 | Una factura podrá modificarse hasta el cierre del trimestre natural de su fecha; después quedará bloqueada                                                    | UR-01           |
+| FR-31 | Las facturas serán numeradas con una serie y número identificador dentro de esa serie (configurable por superadministrador)                                    | UR-01, UR-05    |
+| FR-32 | Los números de serie de facturas rectificativas y normales deben ser distintos                                                                                  | UR-01           |
+| FR-33 | Una factura en borrador (todavía no creada) no consume un número identificador                                                                                  | UR-01           |
+| FR-34 | El reenvío de una factura en caso de un error no cambia el identificador de la misma (que no se generen duplicados)                                           | UR-01           |
+| FR-35 | El borrador de una factura puede ser eliminado, pero no una factura ya emitida                                                                                | UR-01           |
+|       | **BÚSQUEDA Y FILTRADO DE CLIENTES Y FACTURAS**                                                                                                                  |                 |
+| FR-36 | Se podrán buscar clientes por nombre y NIF                                                                                                                      | UR-03, UR-06    |
+| FR-37 | Se podrán filtrar clientes por país, sector, estado, fecha de alta                                                                                              | UR-03, UR-06    |
+| FR-38 | Se podrán filtrar facturas por estado (pagada, pendiente, impagada), tipo (recurrente, puntual) y fecha                                                         | UR-02, UR-07, UR-08 |
+|       | **TARIFAS Y RECURRENCIA**                                                                                                                                       |                 |
+| FR-39 | La cuota mensual se calculará según una tabla de rangos de facturación anual, configurable por el superadministrador                                           | UR-05           |
+| FR-40 | La cuota de un cliente será constante durante todo el año, salvo cambio de rango                                                                                | UR-01           |
+| FR-41 | El sistema avisará cada año de la revisión de los rangos de facturación de cada cliente                                                                         | UR-01           |
+|       | **SEGUIMIENTO DE COBROS**                                                                                                                                       |                 |
+| FR-42 | El sistema consultará automáticamente el sistema de cobros (como mínimo Stripe) para comprobar si una factura está pagada                                     | UR-02           |
+| FR-43 | La consulta de cobros se implementará como un módulo simulado e intercambiable, para integrar después Stripe/Revolut reales                                  | UR-02           |
+| FR-44 | Al detectar el pago, el sistema marcará la factura como pagada automáticamente                                                                                 | UR-02           |
+| FR-45 | Al detectar el pago, el sistema detendrá el flujo de recordatorios                                                                                              | UR-01, UR-02    |
+| FR-46 | Superado el plazo sin pago, el sistema marcará la factura como vencida/impagada                                                                                | UR-02           |
+|       | **NOTIFICACIONES**                                                                                                                                              |                 |
+| FR-47 | Al generar una factura se notificará al cliente adjuntando la factura                                                                                           | UR-01           |
+| FR-48 | El sistema enviará un recordatorio de pago al cliente el día 3                                                                                                  | UR-01           |
+| FR-49 | El sistema enviará un segundo recordatorio el día 5                                                                                                             | UR-01           |
+| FR-50 | Desde el día 5 sin pago, se enviarán avisos de impago cada 2-3 días hasta que se detecte el pago, sin cancelar ni sancionar al cliente                          | UR-01, UR-02    |
+| FR-51 | Las notificaciones al cliente se enviarán por correo electrónico                                                                                               | UR-01           |
+| FR-52 | Las notificaciones al cliente podrán enviarse también por WhatsApp                                                                                              | UR-01           |
+| FR-53 | Toda notificación al cliente incluirá los datos de contacto de soporte (email y teléfono)                                                                       | UR-01           |
+| FR-54 | El usuario de Turbine asignado al cliente recibirá una notificación cuando se detecte un pago y en cada aviso de impago                                       | UR-02           |
+| FR-55 | El sistema mantendrá un registro de cada notificación enviada (destinatario, canal, fecha, estado)                                                             | UR-01, UR-07    |
+|       | **AUTENTICACIÓN**                                                                                                                                              |                 |
+| FR-56 | Los usuarios iniciarán sesión con correo corporativo y contraseña                                                                                               | UR-04           |
+| FR-57 | El sistema verificará que el correo pertenece al dominio de Turbine y rechazará correos personales o de otras empresas                                         | UR-04           |
+| FR-58 | No existirá registro público: las cuentas sólo las crean usuarios autorizados de Turbine, y los clientes como tal no tendrán acceso                           | UR-03, UR-04    |
+|       | **FUNCIONES DEL LECTOR**                                                                                                                                        |                 |
+| FR-59 | El lector solo verá clientes y facturas que tenga asignados, y no verá datos de los demás                                                                       | UR-03, UR-08    |
+| FR-60 | El lector podrá crear facturas                                                                                                                                  | UR-08           |
+| FR-61 | El lector podrá editar los datos y propiedades (estado, tipo, fecha) de facturas a excepción del importe                                                        | UR-08           |
+| FR-62 | El lector podrá editar los datos, estado, tipo de plan y rango de facturación de sus clientes asignados                                                         | UR-08           |
+| FR-63 | El lector podrá consultar el estado de las facturas asignadas y descargarlas en PDF                                                                             | UR-07, UR-08    |
+|       | **FUNCIONES DEL ADMINISTRADOR Y GESTIÓN DE USUARIOS**                                                                                                           |                 |
+| FR-64 | El administrador podrá dar de alta usuarios del sistema                                                                                                         | UR-03           |
+| FR-65 | El administrador asignará el rol (administrador o lector) a cada usuario                                                                                        | UR-03           |
+| FR-66 | El administrador asignará a cada lector los clientes que puede ver                                                                                             | UR-03           |
+| FR-67 | La asignación de clientes a lectores dispondrá de buscador y filtros (país, sector, estado, fecha de alta)                                                     | UR-03           |
+| FR-68 | El administrador podrá editar y desactivar usuarios                                                                                                             | UR-03           |
+| FR-69 | El administrador tendrá acceso y capacidad de gestión sobre todos los clientes y facturas                                                                       | UR-01, UR-03, UR-06 |
+|       | **FUNCIONES DEL SUPERADMINISTRADOR Y GESTIÓN DE CONFIGURACIÓN DE LA APLICACIÓN**                                                                                 |                 |
+| FR-70 | El superadministrador podrá modificar el plazo de pago estándar (5 días)                                                                                       | UR-05           |
+| FR-71 | El superadministrador podrá configurar la periodicidad y el calendario de recordatorios e impagos                                                             | UR-05           |
+| FR-72 | El superadministrador podrá configurar los rangos de cuotas de los clientes                                                                                     | UR-05           |
+| FR-73 | El superadministrador podrá configurar los periodos de conservación y borrado de datos                                                                        | UR-05           |
+| FR-74 | El superadministrador podrá gestionar los permisos y roles de los demás usuarios, incluidos los administradores                                                | UR-05           |
+| FR-75 | El superadministrador podrá acceder a las copias de seguridad y registros de actividad                                                                        | UR-05           |
+| FR-76 | El superadministrador podrá modificar la plantilla estándar de las facturas                                                                                   | UR-05           |
+| FR-77 | El superadministrador podrá configurar las series numéricas                                                                                                     | UR-05           |
+|       | **DASHBOARD E INFORMES**                                                                                                                                        |                 |
+| FR-78 | El sistema ofrecerá un dashboard con informes de facturación semanales, mensuales y anuales                                                                    | UR-09           |
+| FR-79 | El dashboard mostrará importes facturados, cobrados, pendientes e impagados                                                                                     | UR-09           |
+| FR-80 | El acceso al dashboard se restringirá al rol administrador (lectores no incluidos)                                                                             | UR-03, UR-09    |
+|       | **TRAZABILIDAD, COPIAS DE SEGURIDAD Y API**                                                                                                                     |                 |
+| FR-81 | El sistema mantendrá un historial de modificaciones de clientes y facturas (quién, cuándo y qué cambió)                                                       | UR-07           |
+| FR-82 | El sistema mantendrá un historial de quién consultó qué facturas                                                                                                | UR-07           |
+| FR-83 | El sistema registrará los permisos concedidos a cada usuario                                                                                                   | UR-03, UR-05    |
+| FR-84 | El sistema generará copias de seguridad periódicas de todos los movimientos (pagos, clientes, permisos, accesos)                                              | UR-05           |
+| FR-85 | El sistema expondrá una API para consultar si un cliente tiene facturas pendientes                                                                             | UR-02           |
+| FR-86 | El sistema podrá comunicarse con otros sistemas mediante dicha API                                                                                              | UR-02           |
+| FR-87 | La API será extensible para futuras consultas externas, por ejemplo desde BrainOS                                                                               | UR-05           |
+| FR-88 | El sistema contará con documentación de uso y técnica                                                                                                           | UR-05           |
 
 
 ### 4.2. Requisitos no funcionales
@@ -125,14 +198,27 @@ La organización principal que va a interactuar con este sistema es la propia em
 
 | ID     | Categoría                 | Requisito                                                                                                                      | Criterio verificable                                                                                                        |
 | ------ | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| NFR-01 | Usabilidad                | Las operaciones administrativas habituales deberán poder realizarse de forma rápida y sencilla                                 | Una operación habitual como generar o consultar una factura debería poder completarse aproximadamente en menos de un minuto |
-| NFR-02 | Portabilidad / Usabilidad | La aplicación deberá poder utilizarse desde distintos tipos de dispositivo                                                     | Las principales funcionalidades deberán ser utilizables desde ordenador, tableta y teléfono móvil                           |
-| NFR-03 | Escalabilidad             | El sistema deberá poder gestionar un crecimiento significativo del número de clientes                                          | El diseño no deberá asumir un número pequeño o fijo de clientes y deberá permitir gestionar potencialmente miles de ellos   |
-| NFR-04 | Seguridad                 | El sistema deberá proteger la confidencialidad de los datos personales, fiscales<br>y financieros mediante controles de acceso | ?                                                                                                                           |
-| NFR-05 | Seguridad                 | El sistema deberá implementar un cifrado de los datos del usuario                                                              | ?                                                                                                                           |
-| NFR-06 | Legal                     | Preservación a largo plazo de los datos de los usuarios                                                                        | El diseño deberá poder guardar los datos de un usuario hasta 5 años                                                         |
-| NFR-07 | Usabilidad / Legal        | Las facturas generadas deben estar estandarizadas                                                                              | Las facturas generadas deben estar estandarizadas                                                                           |
-| ...    | ...                       | ...                                                                                                                            | ...                                                                                                                         |
+| NFR-01 | Usabilidad                | Las operaciones habituales (crear cliente, crear factura, consultar estado) serán rápidas                                      | Una operación habitual como generar o consultar una factura debería poder completarse aproximadamente en menos de un minuto |
+| NFR-02 | Usabilidad                | Se minimizará el número de clics en la interfaz                                                                                | Las flujos de trabajo principales deben completarse en la menor cantidad de pasos/pantallas posible                         |
+| NFR-03 | Usabilidad                | La interfaz será simple y no exigirá aprendizaje previo                                                                        | Un usuario nuevo sin formación previa debe poder realizar tareas básicas de forma intuitiva desde el primer uso              |
+| NFR-04 | Portabilidad              | Aplicación web responsive utilizable desde móvil, tableta y ordenador                                                          | Las principales funcionalidades deberán ser utilizables y adaptarse visualmente en ordenador, tableta y teléfono móvil    |
+| NFR-05 | Escalabilidad             | El sistema soportará miles de clientes y sus facturas                                                                          | El diseño no deberá asumir un número pequeño o fijo de clientes y deberá permitir gestionar potencialmente miles de ellos   |
+| NFR-06 | Rendimiento               | Las consultas y operaciones interactivas responderán con rapidez                                                               | El tiempo de respuesta de las vistas principales y búsquedas en la interfaz debe ser inferior a 2 segundos                   |
+| NFR-07 | Rendimiento               | La generación mensual masiva de facturas será eficiente                                                                        | El proceso batch automático de facturación mensual no debe degradar el rendimiento general ni bloquear el sistema        |
+| NFR-08 | Fiabilidad                | Los procesos automáticos (facturación, consulta de cobros, recordatorios) serán fiables                                        | Ejecución de los procesos automáticos sin pérdida de ejecuciones ni errores no gestionados                                  |
+| NFR-09 | Fiabilidad                | La información fluirá sin pérdidas hasta la persona correcta                                                                   | Garantizar la entrega de notificaciones a los destinatarios configurados                                                    |
+| NFR-10 | Seguridad                 | El acceso a datos y funciones se controlará por rol y por clientes asignados                                                   | El sistema deberá proteger la confidencialidad mediante controles de acceso estrictos por rol y asignación                |
+| NFR-11 | Seguridad                 | Los datos y contraseñas se protegerán con cifrado                                                                              | Las contraseñas deben estar hasheadas (e.g. bcrypt/Argon2) y los datos sensibles/comunicaciones cifrados (TLS, etc.)       |
+| NFR-12 | Seguridad                 | Uso exclusivamente interno, sin acceso de clientes                                                                             | Restricción total de acceso externo a clientes y verificación de dominio de correo corporativo                              |
+| NFR-13 | Legal                     | Se cumplirá la normativa de protección de datos (RGPD) para datos personales y fiscales                                        | Cumplimiento de la normativa de privacidad y protección de datos vigentes                                                   |
+| NFR-14 | Legal                     | Los datos de clientes se conservarán el máximo que permita la ley                                                              | El diseño deberá poder guardar y preservar los datos de un usuario hasta 5 años                                            |
+| NFR-15 | Legal                     | Las facturas serán estandarizadas y se protegerá su integridad tras el cierre del trimestre                                    | Inmutabilidad de facturas emitida tras el cierre de su trimestre correspondiente                                            |
+| NFR-16 | Mantenibilidad            | La arquitectura será modular para facilitar ampliaciones                                                                       | El diseño software utilizará arquitectura por módulos independientes e intercambiables                                      |
+| NFR-17 | Mantenibilidad            | La API será estándar y las integraciones estarán desacopladas                                                                  | Implementación de API siguiendo estándares (REST/OpenAPI) con desacoplamiento total                                         |
+| NFR-18 | Mantenibilidad            | El sistema estará documentado para uso humano y por agentes de IA                                                              | Existencia de documentación clara de código, API y usuario final                                                            |
+| NFR-19 | Restricciones Técnicas    | Aplicación web independiente de BrainOS, con base de datos propia externa a la de Turbine y, preferentemente, software libre   | Despliegue en base de datos e infraestructura independiente respetando el uso de licencias de software libre               |
+| NFR-20 | Trazabilidad/Recuperación | Los registros de actividad serán inalterables y consultables                                                                   | Registro de auditoría (logs) en almacenamiento de solo lectura/inalterables                                                 |
+| NFR-21 | Trazabilidad/Recuperación | Se podrán restaurar los datos desde copias de seguridad periódicas                                                              | Existencia de copias de seguridad periódicas comprobadas para restauración de desastres                                     |
 
 
 ## 5. Reglas de negocio
