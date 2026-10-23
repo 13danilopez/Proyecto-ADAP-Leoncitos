@@ -61,7 +61,6 @@ La organización principal que va a interactuar con este sistema es la propia em
 | BR-05 | Facilitar la trazabilidad de las operaciones de pago                                       | Cliente / entrevista |
 | BR-06 | Disponer de información sobre la facturación económica de la empresa semanal/mensual/anual | Cliente / entrevista |
 | BR-07 | Poder disponer de un modelo escalable según el número de usuarios                          | Decisión de equipo   |
-| ...   | ...                                                                                        | ...                  |
 
 
 ## 3. Requisitos de usuario
@@ -79,7 +78,6 @@ La organización principal que va a interactuar con este sistema es la propia em
 | UR-07 | Personal administrativo | Poder consultar un historial de facturas y descargarlas                                                        | Cliente / entrevista |
 | UR-08 | Lector                  | Poder crear facturas (puntuales, por fecha y recurrentes) y consultar su estado                                | Cliente / entrevista |
 | UR-09 | Personal administrativo | Tener acceso al dashboard informativo del sistema                                                              | Cliente / entrevista |
-| ...   | ...                     | ...                                                                                                            | ...                  |
 
 
 ## 4. Requisitos del sistema
@@ -191,7 +189,6 @@ La organización principal que va a interactuar con este sistema es la propia em
 | FR-87 | La API será extensible para futuras consultas externas, por ejemplo desde BrainOS                                                                               | UR-05           |
 | FR-88 | El sistema contará con documentación de uso y técnica                                                                                                           | UR-05           |
 
-
 ### 4.2. Requisitos no funcionales
 
 > Los requisitos no funcionales describen propiedades de calidad, restricciones o condiciones que debe satisfacer el sistema. Cuando sea posible, deberán incluir algún criterio que permita determinar si el requisito se cumple.
@@ -225,47 +222,63 @@ La organización principal que va a interactuar con este sistema es la propia em
 
 > Reglas del dominio o de la organización que condicionan el comportamiento del sistema pero que no representan por sí mismas una funcionalidad.
 
-| ID    | Regla |
-| ----- | ----- |
-| RB-01 | ...   |
-| RB-02 | ...   |
+| ID    | Regla                                                                                                                                                   |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RB-01 | Solo se permite el inicio de sesión a usuarios con cuentas de correo de la empresa                                                                      |
+| RB-02 | No se permite autorregistro ni acceso a clientes externos                                                                                               |
+| RB-03 | Una factura emitida no se puede borrar. Si no se puede modificar por motivos legales o ha cerrado el trimestre, debe emitirse una factura rectificativa |
+| RB-04 | La solicitud de baja de un cliente cancela la generación de nuevas facturas recurrentes, pero las facturas impagadas siguen pendientes                  |
+| RB-05 | La tarifa mensual de suscripción recurrente viene determinada por el rango de facturación anual del cliente                                             |
+| RB-06 | Si un cliente se da de alta en un día distinto al día 1 del mes, el primer cobro se calculará proporcionalmente a los días restantes de dicho mes       |
+| RB-07 | Un usuario lector solo puede ver y editar los clientes que le han sido asignados por un administrador                                                   |
 
 
 ## 6. Suposiciones y decisiones de análisis
 
 > En esta sección se documentarán las decisiones tomadas por el equipo cuando la información proporcionada por el cliente no sea suficiente para determinar unívocamente un requisito.
 
-| ID | Suposición o decisión | Justificación | Requisitos afectados |
-|---|---|---|---|
-| A-01 | ... | ... | FR-... |
-| A-02 | ... | ... | ... |
+| ID   | Suposición o decisión                                                                                        | Justificación                                                                                                    | Requisitos afectados       |
+| ---- | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| A-01 | Las pasarelas de pago (Stripe/Revolut) se implementarán mediante módulos simulados                           | El cliente indicó que conectar proveedores reales queda fuera del alcance actual de la aplicación                | FR-42, FR-43, FR-51, FR-52 |
+| A-02 | El plazo por defecto de conservación de datos es de 5 años.                                                  | Cumplimiento de las obligaciones legales                                                                         | FR-12, NFR-08              |
+| A-03 | La revisión de rangos de facturación anual requerirá confirmación humana de un administrador                 | Evitar cambios automáticos no deseados en la facturación debido a posibles errores en la información del cliente | FR-39, FR-41               |
+| A-04 | Para calcular el importe de las altas a mitad de mes, se utilizará el número de días reales del mes en curso | Más preciso que una simplificación genérica de 30 días por mes                                                   | FR-23                      |
 
 
 ## 7. Dudas, ambigüedades y cuestiones pendientes
 
 > Se incluirán aquí aspectos de la información proporcionada por el cliente que sean ambiguos, incompletos, contradictorios o que requieran aclaración.
 
-| ID | Cuestión | Origen | Impacto | Estado / resolución |
-|---|---|---|---|---|
-| Q-01 | Se hace distincion entre administrador y lector en la platadorma de pago? es decir, nosotros debemos tener en cuenta entre lector y administrador | Entrevista | ... | Pendiente |
-| Q-02 | ... | ... | ... | Resuelta: ... |
+| ID   | Cuestión                                                                                 | Origen     | Impacto                                               | Estado / resolución                                                                                                             |
+| ---- | ---------------------------------------------------------------------------------------- | ---------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Q-01 | ¿Se requiere integración con el sistema Verifactu de la Agencia Tributaria?              | Entrevista | Complejidad técnica y legal en generación de facturas | No se incluye Verifactu en el alcance; las reglas legales complejas pasan por gestoría externa                                  |
+| Q-02 | ¿Existe diferenciación entre rol Administrador y Lector?                                 | Entrevista | Definición de roles y permisos                        | Sí. El Administrador gestiona todo el sistema y asignaciones, mientras que el Lector gestiona únicamente los clientes asignados |
+| Q-03 | ¿Se requiere implementar autenticación de doble factor (2FA)?                            | Entrevista | Seguridad de autenticación                            | No es obligatorio para la versión inicial, pero el diseño debe permitir su incorporación futura                                 |
+| Q-04 | ¿Los clientes de Turbine tendrán acceso a la plataforma para pagar o consultar facturas? | Entrevista | Alcance del sistema y seguridad                       | No. La plataforma es de uso exclusivamente interno para el personal de Turbine                                                  |
 
 
 ## 8. Trazabilidad
 
-> La tabla permitirá comprobar la relación entre las necesidades de negocio, los requisitos de usuario y los requisitos del sistema.
+> La tabla permitirá comprobar la relación entre las necesidades de negocio, las reglas de negocio, los requisitos de usuario y los requisitos del sistema.
 
-| Requisito de negocio | Requisito de usuario | Requisito funcional / no funcional |
-|---|---|---|
-| BR-01 | UR-01 | FR-01, FR-02 |
-| BR-02 | UR-03 | FR-07, NFR-02 |
+| Requisito de negocio | Regla de negocio | Requisito de usuario | Requisito funcional / no funcional                               |
+| -------------------- | ---------------- | -------------------- | ---------------------------------------------------------------- |
+| BR-01                | RB-01, RB-02     | UR-01, UR-04, UR-06  | FR-01, FR-17, FR-18, FR-56, NFR-11                               |
+| BR-02                | RB-05, RB-06     | UR-01, UR-07, UR-08  | FR-16, FR-22, FR-23, FR-24, FR-36, NFR-01                        |
+| BR-03                | RB-03, RB-04     | UR-01, UR-02         | FR-21, FR-39, FR-40, FR-42, FR-44, FR-48, FR-49, FR-50           |
+| BR-04                | RB-02, RB-03     | UR-01, UR-05         | FR-19, FR-25, FR-30, FR-31, NFR-05, NFR-09                       |
+| BR-05                | RB-03, RB-04     | UR-02, UR-07         | FR-55, FR-81, FR-82, NFR-12                                      |
+| BR-06                | —                | UR-09                | FR-78, FR-79, FR-80                                              |
+| BR-07                | RB-01, RB-07     | UR-03, UR-05         | FR-57, FR-58, FR-59, FR-64, FR-66, FR-85, NFR-03, NFR-06, NFR-10 |
 
 
 ## 9. Glosario
 
 > Definiciones de términos más técnicos usados en la documentación.
 
-| Término            | Definición                                                                                                                                                   |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Factura recurrente | Tipo de factura configurada para que se notifique periódicamente al usuario de su pago (en este caso, mensual). Se puede ver como una "suscripción mensual". |
-| ...                | ...                                                                                                                                                          |
+| Término                   | Definición                                                                                                                                                    |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Factura recurrente**    | Factura generada y emitida automáticamente con periodicidad regular (mensual) correspondiente a la cuota de suscripción del cliente.                          |
+| **Factura puntual**       | Factura emitida de forma aislada para cobrar un servicio específico o adicional (instalación, formación, consultoría, etc.).                                  |
+| **Factura rectificativa** | Documento contable emitido para corregir o anular una factura previamente emitida que no puede ser modificada directamente por restricciones legales.         |
+| **Borrado lógico**        | Marcar un registro como inactivo o dado de baja en la base de datos sin eliminar físicamente sus datos, garantizando la conservación histórica y legal.       
