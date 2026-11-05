@@ -13,8 +13,6 @@ Requisitos a añadir/cambiar:
 
 - Hacer los **casos de uso** (se nos olvidó) siguiendo la plantilla "template_casos_uso" que se proporciona en la tarea de la Entrega 1 en el campus.
 
-- **Más diagramas UML** -> diagrama general (el que ya tenemos) + otros especificados por "*módulos*" (similar al de los Perritos), que podríamos basar en las categorías de requisitos que tenemos para relacionarlos fácilmente.
-
 ### Informe Scrum
 
 Incluir en el informe Scrum de esta entrega:

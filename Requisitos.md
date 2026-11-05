@@ -131,7 +131,7 @@ La organización principal que va a interactuar con este sistema es la propia em
 | FR-38 | Se podrán filtrar facturas por estado (pagada, pendiente, impagada), tipo (recurrente, puntual) y fecha                                                         | UR-02, UR-07, UR-08 |
 |       | **TARIFAS Y RECURRENCIA**                                                                                                                                       |                 |
 | FR-39 | La cuota mensual se calculará según una tabla de rangos de facturación anual, configurable por el superadministrador                                           | UR-05           |
-| FR-40 | La cuota de un cliente será constante durante todo el año, salvo cambio de rango                                                                                | UR-01           |
+| FR-40 | La cuota de un cliente será constante durante todo el año                                                                                | UR-01           |
 | FR-41 | El sistema avisará cada año de la revisión de los rangos de facturación de cada cliente                                                                         | UR-01           |
 |       | **SEGUIMIENTO DE COBROS**                                                                                                                                       |                 |
 | FR-42 | El sistema consultará automáticamente el sistema de cobros (como mínimo Stripe) para comprobar si una factura está pagada                                     | UR-02           |
