@@ -7,7 +7,7 @@
 Requisitos a añadir/cambiar:
 
 - Añadir **facturas multi-idioma**
-- Modificar **FR-40**: factura constante todo el año (no hay cambio de rango entre año)
+- Modificar **FR-40**: factura constante todo el año (no hay cambio de rango entre año) (Modificado)
 
 ### Casos de Uso y UML
 
@@ -45,7 +45,7 @@ Incluir en el informe Scrum de esta entrega:
 
 - Distinguir **seguimiento de deudas** del estado de la suscripción del cliente para evitar generar facturas durante una pausa o baja del cliente.
 
-- Facturas extraordinarias.
+- Facturas extraordinarias (incluido)
 
 - Campo adicional de factura para indicar si está rectificando a una (relacionarla claramente) ó incluir en el propio formato del identificador (e.g. 178239203-1, donde el "-1" indica que es una primera rectificación sobre la original, 178239203).
 
