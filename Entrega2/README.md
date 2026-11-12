@@ -6,5 +6,6 @@
 - `informe_scrum.md`: trabajo del equipo y evidencias de Scrum.
 - `cambios_entrega1.md`: cambios de análisis y su impacto en el diseño.
 - `evidencias/`: capturas reales del tablero de gestión.
+- `informe-final/`: PDF consolidado de la segunda entrega.
 
-Completad las plantillas, componed el informe en el editor de documentos que prefiráis y **exportadlo manualmente** como `informe-final/entrega2.pdf`. No hay scripts de compilación en este paquete.
+Completad las plantillas, componed el informe en el editor de documentos que prefiráis y **exportadlo manualmente** como `entrega2/informe-final/entrega2.pdf`. No hay scripts de compilación en este paquete.
