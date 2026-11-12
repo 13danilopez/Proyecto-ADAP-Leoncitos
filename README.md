@@ -11,13 +11,13 @@ Este repositorio contiene **plantillas y ejemplos ficticios mínimos**, no una s
 | Ruta | Contenido |
 |---|---|
 | `entrega1-actualizada/fuentes/` | Fuentes corregidas y actualizadas de la primera entrega: requisitos, casos de uso, diagrama y Scrum de esa etapa. |
-| `entrega1-actualizada/informe/` | PDF consolidado de la primera entrega actualizada, elaborado manualmente por el equipo. |
+| `entrega1-actualizada/informe-final/` | PDF consolidado de la primera entrega actualizada, elaborado manualmente por el equipo. |
 | `entrega2/diagramas/` | **Fuentes PlantUML** del modelo de datos, clases, secuencias y componentes. |
 | `entrega2/documentacion/` | Explicaciones de cada modelo: decisiones, supuestos, alternativas y trazabilidad. |
 | `entrega2/informe_scrum.md` | Informe Scrum de **esta** entrega (reuniones, evidencias del tablero, riesgos, retrospectiva). |
 | `entrega2/cambios_entrega1.md` | Cambios desde la primera entrega y consecuencias de diseño. |
 | `entrega2/informe.md` | Portada, introducción y orden de capítulos del informe consolidado. |
-| `informe-final/` | PDF consolidado de la **segunda** entrega. |
+| `entrega2/informe-final/` | PDF consolidado de la **segunda** entrega. |
 
 ## Procedimiento recomendado
 
