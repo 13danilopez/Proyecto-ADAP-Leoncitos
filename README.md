@@ -1,60 +1,70 @@
-# Proyecto-ADAP-Leoncitos
+# Análisis y Diseño de Aplicaciones · Grupo A · 2026–27
 
-## TO-DO: revisión Entrega 1
+## Paquete de trabajo para la Entrega 2: Diseño del sistema
 
-### Especificación de Requisitos
+**Fecha prevista según guía operativa v1.0: 27/11/2026.**
 
-Requisitos a añadir/cambiar:
+Este repositorio contiene **plantillas y ejemplos ficticios mínimos**, no una solución al caso Turbine. Reemplazad los ejemplos por vuestro trabajo. Los códigos `RF-01` y `CU-01` son ilustrativos: emplead los identificadores reales de vuestra Entrega 1.
 
-- Añadir **facturas multi-idioma**
-- Modificar **FR-40**: factura constante todo el año (no hay cambio de rango entre año)
+## ¿Qué va en cada carpeta?
 
-### Casos de Uso y UML
+| Ruta | Contenido |
+|---|---|
+| `entrega1-actualizada/fuentes/` | Fuentes corregidas y actualizadas de la primera entrega: requisitos, casos de uso, diagrama y Scrum de esa etapa. |
+| `entrega1-actualizada/informe/` | PDF consolidado de la primera entrega actualizada, elaborado manualmente por el equipo. |
+| `entrega2/diagramas/` | **Fuentes PlantUML** del modelo de datos, clases, secuencias y componentes. |
+| `entrega2/documentacion/` | Explicaciones de cada modelo: decisiones, supuestos, alternativas y trazabilidad. |
+| `entrega2/informe_scrum.md` | Informe Scrum de **esta** entrega (reuniones, evidencias del tablero, riesgos, retrospectiva). |
+| `entrega2/cambios_entrega1.md` | Cambios desde la primera entrega y consecuencias de diseño. |
+| `entrega2/informe.md` | Portada, introducción y orden de capítulos del informe consolidado. |
+| `informe-final/` | PDF consolidado de la **segunda** entrega. |
 
-- Hacer los **casos de uso** (se nos olvidó) siguiendo la plantilla "template_casos_uso" que se proporciona en la tarea de la Entrega 1 en el campus.
+## Procedimiento recomendado
 
-- **Más diagramas UML** -> diagrama general (el que ya tenemos) + otros especificados por "*módulos*" (similar al de los Perritos), que podríamos basar en las categorías de requisitos que tenemos para relacionarlos fácilmente.
+1. **Actualizad Entrega 1**: corregid requisitos y casos de uso, manteniendo identificadores estables; documentad los cambios.
+2. **Editad las fuentes `.puml`**: cada diagrama debe representar vuestro sistema, no los ejemplos ficticios. Añadid más secuencias cuando sea necesario.
+3. **Explicad cada diagrama en `.md`**: alcance, relación con RF/CU, decisiones y supuestos. PlantUML permite `note`, pero la explicación extensa debe ir en Markdown.
+4. **Completad `entrega2/informe_scrum.md`**: sustituid las referencias a capturas por imágenes reales y verificad que sean legibles.
+5. **Preparad manualmente los informes PDF**: renderizad o exportad cada diagrama en PlantUML, insertadlo junto a sus explicaciones en el documento que utilicéis (por ejemplo, un procesador de texto) y exportad el resultado a PDF. Revisad la legibilidad y el contenido final. El informe de Entrega 1 actualizada y el de Entrega 2 son PDFs distintos.
+6. **Subid fuentes, PDFs y evidencias al repositorio Git**. No subáis únicamente PDFs.
+7. **Realizad la evaluación interna** con el procedimiento oficial del profesorado (método de las bolas); este paquete no sustituye sus instrucciones.
 
-### Informe Scrum
+## Preparación manual de los informes PDF
 
-Incluir en el informe Scrum de esta entrega:
+**Este paquete no incluye scripts ni mecanismos de compilación automática.** Cada equipo es responsable de preparar y revisar manualmente los dos documentos PDF.
 
-- Quién hizo qué tareas.
-- Justificación de prioridad de tareas.
-- Conexión con artefactos (que el proceso explique cómo se llegó al resultado final).
+1. Abrir cada archivo `.puml` con PlantUML (aplicación, complemento del editor o editor en línea), comprobar que el diagrama se visualiza correctamente y exportarlo como imagen (preferentemente SVG o PNG de buena resolución).
+2. Completar los textos `.md` con explicaciones, decisiones de diseño y referencias a requisitos/casos de uso. Pueden copiarse o incorporarse manualmente al documento final usando el editor que elija el equipo.
+3. Elaborar un documento de **Entrega 1 actualizada** a partir de `entrega1-actualizada/fuentes/`, incorporando sus diagramas revisados. Exportarlo manualmente a `entrega1-actualizada/informe/entrega1_actualizada.pdf`.
+4. Elaborar el documento de **Entrega 2** siguiendo el índice de `entrega2/informe.md`, incorporando los diagramas exportados, su prosa explicativa, el registro de cambios y el informe Scrum con capturas legibles. Exportarlo manualmente a `informe-final/entrega2.pdf`.
+5. Abrir ambos PDFs y comprobar visualmente que no faltan apartados, páginas, imágenes, leyendas ni referencias. Los archivos fuente deben quedar en el repositorio.
 
----
+No se exige una herramienta concreta de edición de documentos. **No basta con entregar capturas de diagramas sin explicación escrita.** La evaluación individual por el método de las bolas sigue el procedimiento indicado por el profesorado.
 
-### Otras anotaciones
+### Comprobaciones habituales
 
-- Plantear en algún diagrama/presentación explicativa un **flujo general del proceso de facturas** (e.g. Perritos y Hienitas).
+- Si un diagrama no se ve correctamente, revisad el archivo `.puml` antes de exportarlo.
+- Si una figura aparece demasiado pequeña en el PDF, mejorad su resolución, divididla por subsistemas o utilizad orientación apaisada cuando proceda.
+- Si el PDF queda desactualizado tras modificar las fuentes, **revisadlo y volved a exportarlo manualmente**.
+- Comprobad la correspondencia entre requisitos, casos de uso, clases, tablas, secuencias y componentes.
 
-- Hacer hincapié en la **interfaz móvil** (especificar la adaptabilidad del sistema) + diseñar interfaz web en ordenador?
+## Reglas de calidad y alcance
 
-- División por **departamentos** de clientes.
+- Usad nombres significativos y relaciones con cardinalidades/multiplicidades cuando proceda.
+- Asegurad consistencia entre modelo de datos, diseño de clases, secuencias y arquitectura.
+- El diagrama físico ER requiere tablas, atributos, PK, FK, relaciones y cardinalidades pertinentes.
+- En el diagrama de secuencia se deben representar escenarios relevantes de casos de uso; uno solo **no implica** que uno siempre baste.
+- No es necesario incorporar todas las relaciones UML posibles: representad las que realmente existan.
+- Los ejemplos son mínimos, **no** un criterio completo de calificación ni un sustituto de la guía operativa v1.0.
 
-- Especificar un poco más acerca del **dashboard financiero** del sistema.
+## Lista de comprobación antes de entregar
 
-- Indicar explícitamente que la **pasarela** con Stripe/Revolut será **simulada**.
-
-- **Privacidad** un poco más específica? requisitos funcionales que tengan que ver con ella?
-
-- **Importante**: cancelar una deuda -> no marcarla como PAGADA  (falseamiento de datos financieros) -> un estado distinguido del resto (e.g. condonada/anulada).
-
-- Añadir ejemplos de **"edge-cases" prácticos** (como los Perritos).
-
-- Contemplar **descuentos extraordinarios**, precios pactados o facturas fuera de lo habitual que necesitan aprobación (revisión manual de admin/superadmin).
-
-- Distinguir **seguimiento de deudas** del estado de la suscripción del cliente para evitar generar facturas durante una pausa o baja del cliente.
-
-- Facturas extraordinarias.
-
-- Campo adicional de factura para indicar si está rectificando a una (relacionarla claramente) ó incluir en el propio formato del identificador (e.g. 178239203-1, donde el "-1" indica que es una primera rectificación sobre la original, 178239203).
-
-- **Factura incobrable**/irresoluble, en casos especiales en los que por motivos legales (e.g. quiebra del cliente) una factura no vaya a poder ser pagada -> Turbine debe encargarse personalmente de contactar con la empresa.
-
-- **Comprobación de pagos** con la pasarela simulada Stripe. ¿Qué hacer cuando haya pagos no identificados, incoherencia de datos o eventos repetidos? -> respuesta automática (e.g. descartar eventos repetidos) / mandar a revisión manual de admin/superadmin (pago no identificado/datos incoherentes en factura).
-
-- **Notificación a usuarios del sistema** por impagos, incidencias, aprobaciones, revisiones... ¿Tener una **bandeja de notificaciones** para que vea sus tareas pendientes?
-
-- **Fallos en procesos automatizados** -> probar un número determinado de reintentos y si sigue sin haber éxito, notificar a admins/superadmin.
+- [ ] PDF de Entrega 1 actualizada, con fuentes correspondientes.
+- [ ] Informe Scrum (fuente y PDF dentro del informe consolidado; capturas reales del tablero).
+- [ ] ER físico: tablas, PK, FK, tipos de datos y cardinalidades coherentes.
+- [ ] Clases: atributos, operaciones, relaciones y multiplicidades pertinentes.
+- [ ] Secuencias: escenarios relevantes y mensajes consistentes con clases y casos de uso.
+- [ ] Arquitectura/componentes: responsabilidades y dependencias claras.
+- [ ] Justificación escrita de cada diagrama y trazabilidad a requisitos y CU.
+- [ ] PDF consolidado revisado y fuentes versionadas en Git.
+- [ ] Evaluación interna de compañeros por el procedimiento oficial.

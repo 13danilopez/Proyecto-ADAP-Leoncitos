@@ -1,0 +1,17 @@
+@startuml
+title Arquitectura por componentes · ejemplo
+skinparam componentStyle rectangle
+actor Cliente
+component "Interfaz web" as UI
+component "Servicio de pedidos" as S
+component "Repositorio de pedidos" as R
+database "Base de datos" as DB
+Cliente --> UI : utiliza
+UI --> S : solicita operaciones
+S --> R : persistencia
+R --> DB : consultas / transacciones
+note right of S
+  Responsabilidad: reglas
+  de negocio de pedidos.
+end note
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+' Ejemplo ficticio de diagrama físico (IE / Crow's Foot)
+title Modelo físico de datos · ejemplo
+hide circle
+skinparam linetype ortho
+entity "CLIENTE" as Cliente {
+  * id_cliente : INTEGER <<PK>>
+  --
+  * nombre : VARCHAR(100)
+}
+entity "PEDIDO" as Pedido {
+  * id_pedido : INTEGER <<PK>>
+  --
+  * id_cliente : INTEGER <<FK>>
+  * fecha : DATE
+}
+entity "LINEA_PEDIDO" as Linea {
+  * id_linea : INTEGER <<PK>>
+  --
+  * id_pedido : INTEGER <<FK>>
+  * cantidad : INTEGER
+}
+Cliente ||--o{ Pedido : realiza
+Pedido ||--|{ Linea : contiene
+note bottom of Linea
+  Ejemplo: cantidad > 0.
+  Explicar restricciones en el .md.
+end note
+@enduml

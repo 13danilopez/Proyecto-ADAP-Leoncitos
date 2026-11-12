@@ -1,0 +1,25 @@
+@startuml
+title CU-01 Registrar pedido · escenario principal (ejemplo)
+actor Cliente
+boundary "Interfaz" as UI
+control "ServicioPedidos" as S
+entity "RepositorioPedidos" as R
+Cliente -> UI : confirmarPedido(lineas)
+activate UI
+UI -> S : registrarPedido(lineas)
+activate S
+S -> S : validarLineas(lineas)
+alt líneas válidas
+  S -> R : guardar(pedido)
+  activate R
+  R --> S : idPedido
+  deactivate R
+  S --> UI : confirmación(idPedido)
+  UI --> Cliente : mostrarConfirmación()
+else sin disponibilidad
+  S --> UI : errorDisponibilidad
+  UI --> Cliente : mostrarError()
+end
+deactivate S
+deactivate UI
+@enduml

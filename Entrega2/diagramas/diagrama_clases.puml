@@ -1,0 +1,25 @@
+@startuml
+title Diagrama UML de clases · ejemplo
+skinparam classAttributeIconSize 0
+class Cliente {
+  - id: int
+  - nombre: String
+  + crearPedido(): Pedido
+}
+class Pedido {
+  - id: int
+  - fecha: Date
+  + agregarLinea(producto: String, cantidad: int): void
+  + confirmar(): boolean
+}
+class LineaPedido {
+  - producto: String
+  - cantidad: int
+}
+Cliente "1" -- "0..*" Pedido : realiza
+Pedido "1" *-- "1..*" LineaPedido : contiene
+note right of Pedido
+  La composición expresa que las
+  líneas forman parte de un pedido.
+end note
+@enduml
