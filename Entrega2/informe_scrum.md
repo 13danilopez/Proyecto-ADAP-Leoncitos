@@ -4,25 +4,46 @@
 
 ## Identificación del equipo
 
-| Nombre y apellidos | Rol en esta entrega |
-|---|---|
-| Ana Ejemplo | Scrum Master |
-| Luis Ejemplo | Miembro del equipo |
+| Luis San Juan          | Miembro del equipo |
+| ---------------------- | ------------------ |
+| Daniel Delgado         | Scrum Máster       |
+| Wail Amchi El Haskouri | Product Owner      |
+| José Javier Jimenez    | Miembro del equipo |
+| Daniel López           | Miembro del equipo |
+| Jesús García           | Miembro del equipo |
+| Fernando Montero       | Miembro del equipo |
 
 ## Reuniones del periodo
 
-| Fecha | Inicio | Duración | Participantes | Temas y acuerdos |
-|---|---|---|---|---|
-| 05/11/2026 | 10:00 | 30 min | Ana, Luis | Planificación; reparto del ER y clases (ejemplo). |
-
+| Fecha      | Inicio | Duración            | Participantes                                                        | Temas y acuerdos                                                                                                                                                                                                                         |
+| ---------- | ------ | ------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 05/11/2026 | 8:45   | 1 hora y 45 minutos | - Luis<br>- Daniel L. <br>- Daniel D.<br>- José<br>- Wail<br>- Jesús | Organización de los puntos del trabajo a realizar, inicio de los diagramas de secuencia pero por consejo del profesorado lo dejaremos para más adelante                                                                                  |
+| 10/11/2026 | 12:30  | 30 min              | - Luis<br>- Daniel D.<br>- Jesús<br>- Wail                           | Reunión para la revisión del trabajo con Jose Luis Subirats                                                                                                                                                                              |
+| 12/11/2026 | 8:45   | 1 hora y 45 minutos | - Luis<br>- Daniel L.<br>- Daniel D.<br>- José<br>- Wail<br>- Jesús  | Realizacion de cada parte por los miembros del grupo correspondientes (Corrección de la entrega 1 e inicio de los diagramas de clase) y plantemaineto de una futura reunión para aclarar dudas y afianzar más la gestión de esta entrega |
+ 
 ## Estado del product backlog y Sprint backlog
 
 **Tablero:** [sustituir por URL real](https://example.org/REEMPLAZAR).
 
 Añadir **capturas reales legibles** del estado del tablero en Sprint Planning y Sprint Retrospective. Copiar las imágenes a `entrega2/evidencias/` y enlazarlas así (descomentar con archivos existentes):
 
-<!-- ![Tablero en Sprint Planning](evidencias/sprint-planning.png) -->
-<!-- ![Tablero en Sprint Retrospective](evidencias/sprint-retrospective.png) -->
+#### Estado del tablero en el Sprint Planning
+
+| Estado                               | Tareas                                                                                                                                                                                 |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tareas pendientes de la Entrega      | - Actualizar infrome Scrum 2.<br>- Corrección de la entrega 1.<br>- Realización de los diagramas de clase.<br>- Diagrama de Arquitectura|
+| Tareas omitidas del Sprint actual    | - Diagrama de secuencia.<br>- Sintetización de conclusiones y           referencias                                       |
+| En progreso                          | - Informe Scrum.<br>- Identificación y documentación de requisitos.                                                                                                                    |
+| En revisión                          | ...                                                                                                                                                                                    |
+| Completado                           | ...                                                                                                                                                                                    |
+
+#### Estado del tablero en la Sprint Retrospective
+
+| Qué hacer  | Qué hemos hecho                                                                                                                                                                                                                                                                    |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Mantener   | - La creación y uso del repositorio de GitHub para facilitar la contribución del equipo en cualquier momento.<br>- La alta tasa de tareas completadas durante las sesiones.<br>- El trabajo individual y su posterior puesta en común para dar con nuevas ideas y puntos de vista. |
+| Mejorar    | - La definición y estructuración de los requisitos (tanto funcionales como no funcionales).<br>- La resolución de dudas para definir el alcance exacto del sistema de facturación.                                                                                                 |
+| Cambiar    | - Completar la asignación de roles al inicio, ya que fue la única tarea planificada que no se finalizó.<br>- Asegurar la disponibilidad de transcripciones completas de las charlas antes de documentar, para evitar que falten especificaciones.                                  |
 
 ## Información de tareas
 
