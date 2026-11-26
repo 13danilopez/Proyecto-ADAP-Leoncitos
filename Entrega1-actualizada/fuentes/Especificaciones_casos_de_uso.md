@@ -268,7 +268,53 @@ No se contemplan flujos alternativos para este caso de uso. El usuario sólo pue
 
 ## CU-04 - Modificación de preferencias de pagos
 
-...
+### 1. Identificación
+
+| Campo                     | Descripción                                                                                   |
+| ------------------------- | --------------------------------------------------------------------------------------------- |
+| **Identificador**         | CU-04                                                                                         |
+| **Nombre**                | Modificación de preferencias de pagos                                                         |
+| **Objetivo**              | Capacidad de los usuarios del sistema para configurar las preferencias de pago de un cliente. |
+| **Actores participantes** | Cualquier usuario del sistema (Lector, Administrador, Superadministrador).                    |
+
+---
+
+### 2. Precondiciones
+
+- **PRE-1**: El usuario está registrado en el sistema.
+- **PRE-2**: El usuario ha iniciado sesión (identifiación-autenticación-autorización).
+- **PRE-3**: El cliente está registrado en el sistema.
+
+---
+
+### 3. Flujo principal
+
+1. **Actor**: accede a su apartado de clientes asignados desde su menú principal.
+2. **Sistema**: muestra al usuario su listado de clientes.
+3. **Actor**: hace click en la opción "Configurar preferencias de pago" del cliente.
+4. **Sistema**: muestra al usuario una ventana con esa única característica configurable del cliente.
+5. **Actor**: modifica las preferencias de pago del cliente.
+6. **Actor**: guarda los cambios.
+7. **Sistema**: actualiza los datos del cliente respectivamente.
+
+---
+
+### 4. Flujos alternativos
+
+No se contemplan flujos alternativos para este caso de uso.
+
+---
+
+### 5. Flujos de excepción
+
+No se contemplan flujos de excepción para este caso de uso.
+
+---
+
+### 6. Postcondiciones
+
+- **POST-1**: Las preferencias de pago del cliente modificado quedan actualizadas.
+- **POST-2**: La modificación de las preferencias de pago de un cliente por parte de un usuario quedará registrada en el log del sistema.
 
 ---
 
@@ -294,7 +340,7 @@ No se contemplan flujos alternativos para este caso de uso. El usuario sólo pue
 
 ### 3. Flujo principal
 
-1. **Actor:** accede a la pestaña de "Documentación de Uso del sistema" a través de su menú principal.
+1. **Actor**: accede a la pestaña de "Documentación de Uso del sistema" a través de su menú principal.
 2. **Sistema**: muestra la Documentación de Uso al usuario.
 
 ---
