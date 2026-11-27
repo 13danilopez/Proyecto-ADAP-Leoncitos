@@ -27,10 +27,10 @@ entity "Cliente" as cliente {
   departamento : VARCHAR(50)
   *inicio_plan : DATE
   *tipo_plan : VARCHAR(50)
-  *facturacion_recurrente : BOOLEAN
   *rango_facturacion_cantidad : DECIMAL(10,2)
   *rango_facturacion_divisa : VARCHAR(10)
   *estado : VARCHAR(20) <<CHECK: Activo | EnPausa | BajaSolicitada | Baja>>
+  *factura_recurrente : BOOLEAN
   motivo_pausa : VARCHAR(255)
   fecha_reactivacion_prevista : DATE
   fecha_baja : DATE
@@ -96,18 +96,6 @@ entity "Pago" as pago {
   *pasarela_origen : VARCHAR(50)
 }
 
-entity "NotificacionCliente" as notif_cliente {
-  *id_notif_cliente : INTEGER <<PK>>
-  --
-  *id_factura : INTEGER <<FK>>
-  *destino : VARCHAR(100)
-  *canal : VARCHAR(20) <<CHECK: Email | WhatsApp>>
-  *tipo : VARCHAR(30) <<CHECK: EmisionFactura | Recordatorio | AvisoImpago>>
-  *fecha_hora : DATETIME
-  *estado : VARCHAR(20) <<CHECK: Pendiente | Enviada | Fallida>>
-  *intentos : INTEGER <<DEFAULT: 0>>
-}
-
 entity "LogActividad" as log_actividad {
   *id_log : INTEGER <<PK>>
   --
@@ -164,7 +152,6 @@ cliente ||--o{ factura : "asociada a"
 usuario ||--o{ factura : "creador"
 factura |o--o{ factura : "es rectificada por"
 factura ||--o{ pago : "contiene"
-factura ||--o{ notif_cliente : "genera avisos"
 
 ' Trazabilidad y Alertas
 usuario |o--o{ log_actividad : "autor de"
@@ -200,11 +187,18 @@ note bottom of cliente
   - { estado = 'Baja' IMPLIES NO tener facturas en estado 'Pendiente' o 'VencidaImpagada' }
   - { estado = 'Baja' IMPLIES fecha_baja IS NOT NULL (borrado logico, se conserva retencion_datos_anios) }
   - { estado IN ('EnPausa','Baja','BajaSolicitada') IMPLIES no se generan facturas recurrentes }
+  - { factura_recurrente = FALSE IMPLIES no se generan facturas de tipo 'Recurrente' automaticamente }
 end note
 
 note bottom of usr_clie
   <b>Restricciones de Permisos:</b>
   - { Solo los usuarios con rol 'Lector' o 'Administrador' figuran en esta tabla de asignaciones }
+end note
+
+note bottom of log_actividad
+  <b>Notas de LogActividad:</b>
+  - { Las notificaciones enviadas a clientes (FR-55) se registran aqui: accion = 'NotificacionCliente', tipo_entidad = 'Factura', id_entidad = id_factura, detalle_modificacion = destinatario, canal, estado }
+  - { email_autor IS NULL cuando la accion la ejecuta un proceso automatico }
 end note
 
 note bottom of configuracion
