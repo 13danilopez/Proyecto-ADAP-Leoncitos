@@ -110,19 +110,11 @@ La notación gráfica no valida nada por sí sola, así que dejamos por escrito 
 ## Decisiones abiertas
 
 - **Notificaciones a clientes.** No tienen tabla propia. Cada envío se anota en LogActividad (`accion = 'NotificacionCliente'`, `tipo_entidad = 'Factura'`, y el destinatario, canal y estado en `detalle_modificacion`). Una tabla aparte sería más cómoda para consultar canales y reintentos, pero implicaba añadir una clase nueva al diagrama de clases.
-
 - **Cliente recurrente o puntual.** `factura_recurrente` indica cómo se factura al cliente por defecto, pero no impide que un cliente recurrente reciba una factura puntual o extraordinaria. Eso lo decide `Factura.tipo`.
-
 - **Pagos sin factura identificada.** `Pago.id_factura` es obligatorio. Un pago que no se pueda asociar no se inserta: genera una NotificacionInterna y una entrada en el log para revisarlo a mano. La alternativa era dejar `id_factura` como opcional.
-
 - **Cuota anual inmutable (FR-43).** Si un cliente cambia de rango a mitad de año, la cuota ya facturada se mantiene. No guardamos histórico de rangos, queda reflejado en el importe de las facturas ya emitidas.
-
 - **Tabla de rangos de facturación.** El modelo guarda el rango de cada cliente, pero no una tabla con los rangos y sus cuotas. Pendiente de confirmar con el cliente si el superadministrador debe poder configurarla.
-
 - **Descuentos y precios pactados (FR-45).** No tienen entidad propia. Suponemos que se reflejan en el importe de una factura extraordinaria sujeta a aprobación.
-
 - **Quién aprueba una factura extraordinaria.** No se guarda en Factura, se puede saber por el log. Se podría añadir `email_aprobador` si hace falta.
-
 - **Claves naturales.** Usuario usa su email y Cliente su NIF como clave primaria. Si alguno cambia hay que propagarlo con `ON UPDATE CASCADE`. Preferimos esto a claves artificiales para no complicar el modelo.
-
 - **Tipos de datos.** La divisa es un código (por ejemplo EUR) y los importes son `DECIMAL(10,2)`.

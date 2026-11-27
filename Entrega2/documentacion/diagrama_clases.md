@@ -14,15 +14,17 @@ El diagrama recoge la estructura estática del dominio de LeoncitosManager tal y
 
 Quedan fuera la integración con pasarelas reales, el acceso de los clientes a la plataforma y Verifactu (Q-01). El dashboard (CU-06) y la documentación de uso (CU-05) no tienen clases propias: el dashboard se resuelve con la operación `generarReporteDashboard` sobre Factura y Pago, y la documentación no forma parte del modelo de dominio.
 
+---
+
 ## Decisiones de diseño
 
-**Clase de control**
+### Clase de control
 
 - `LeoncitosManager` (estereotipo `<<control>>`) es el punto de entrada del sistema. Cada operación corresponde a un caso de uso o a un proceso automático (`generarFacturas`, `procesarPagosSimulados`, `enviarNotificacionesCobro`).
 - Compone `Cliente`, `Usuario` y una única `ConfiguracionGlobal`, porque su ciclo de vida depende del sistema. Las facturas no se componen aquí: se alcanzan a través de su cliente.
 - Las operaciones ilustran responsabilidades, no son firmas finales de implementación.
 
-**Tipos de datos y enumeraciones**
+### Tipos de datos y enumeraciones
 
 - `Nif`, `Email`, `Movil` y `Dinero` son `<<primitiveType>>`: encapsulan un valor con su formato y validación (por ejemplo, el dominio corporativo del email, FR-57), en lugar de usar `String` sueltos.
 - `Direccion` es `<<dataType>>`: agrupa calle, número, piso, ciudad y país, y no tiene identidad propia.
@@ -30,20 +32,20 @@ Quedan fuera la integración con pasarelas reales, el acceso de los clientes a l
 - Los valores cerrados (estados, tipos, idiomas, roles) son enumeraciones. Así el estado de una factura se elige entre opciones fijas (FR-30) y no se escribe a mano.
 - `EstadoFactura` separa `Condonada` e `Incobrable` de `Pagada`, para no falsear los datos financieros (FR-52, FR-53).
 
-**Usuarios**
+### Usuarios
 
 - `Usuario` guarda solo el hash de la contraseña (NFR-11) y se desactiva con `activo` en vez de borrarse, para no perder la referencia en facturas y log.
 - Hay dos asociaciones distintas con `Cliente`. `responsable` (1 — 0..*) indica el usuario a cargo de cada cliente (FR-15). `clientesAsignados` (* — *) indica qué clientes puede ver y editar cada usuario (RB-07).
 - Una restricción sobre `clientesAsignados` limita las asignaciones a los roles Lector y Administrador; el superadministrador ya tiene acceso total.
 
-**Clientes y contactos**
+### Clientes y contactos
 
 - `Cliente` se identifica por su `nif`. `etiquetas` es multivaluado (FR-11) y `departamento` es opcional (FR-17).
 - Pausa y baja son estados distintos de `EstadoCliente`. Sus datos asociados (`motivoPausa`, `fechaReactivacionPrevista`, `fechaBaja`) son opcionales `[0..1]` y solo se rellenan en ese estado (FR-09, FR-10).
 - `rangoFacturacionAnual` es de tipo `Dinero` y determina la cuota (FR-07). `facturaRecurrente` indica la modalidad por defecto del cliente (FR-08).
 - `Cliente` compone `Contacto` con multiplicidad 1..*: un contacto no existe sin su cliente y todo cliente tiene al menos uno (FR-03). Cada contacto admite varios emails y teléfonos, con operaciones para añadirlos y quitarlos.
 
-**Facturas y pagos**
+### Facturas y pagos
 
 - `Cliente` agrega `Factura` (agregación, no composición). Una factura emitida tiene valor legal propio y se conserva aunque el cliente se dé de baja (FR-12, RB-03).
 - `Factura` compone `Pago`: un pago solo existe ligado a una factura. Uno sin factura identificada no se registra y pasa a revisión manual.
@@ -53,7 +55,7 @@ Quedan fuera la integración con pasarelas reales, el acceso de los clientes a l
 - `idioma` cubre las facturas multi-idioma (FR-37). `requiereAprobacion` y `estadoAprobacion` cubren las extraordinarias con revisión manual (FR-38, FR-45).
 - `registrarPago`, `marcarComoVencida` y `condonar` concentran en `Factura` los cambios de estado de su ciclo de vida.
 
-**Configuración, trazabilidad y notificaciones**
+### Configuración, trazabilidad y notificaciones
 
 - `ConfiguracionGlobal` es única. Lleva valores por defecto (plazo de 5 días, retención de 5 años) que `restaurarValoresPredeterminados` recupera. `diasAvisoImpago` es una lista configurable.
 - `LogActividad` apunta a su `autorCambio` con multiplicidad 0..1: es nulo cuando actúa un proceso automático. No tiene operaciones porque sus registros son inalterables (NFR-20).
@@ -61,7 +63,7 @@ Quedan fuera la integración con pasarelas reales, el acceso de los clientes a l
 - `NotificacionInterna` forma la bandeja de cada usuario (FR-63). Su `destinatario` es obligatorio y `actualizarEstado` la mueve entre Pendiente, EnRevision y Resuelta.
 - Log y notificaciones navegan hacia `Usuario`, pero no al revés: el usuario no necesita conocerlos para operar.
 
-**Restricciones OCL**
+### Restricciones OCL
 
 | Restricción | Significado |
 | --- | --- |
@@ -71,6 +73,8 @@ Quedan fuera la integración con pasarelas reales, el acceso de los clientes a l
 | `estado = Condonada implies Pago->isEmpty()` | Una deuda condonada no tiene pagos. |
 | `estado = Pagada implies Pago->notEmpty()` | Una factura pagada tiene al menos un pago. |
 | `clientesAsignados->notEmpty() implies rol = Lector or rol = Administrador` | Solo lectores y administradores reciben clientes asignados. |
+
+---
 
 ## Trazabilidad
 
@@ -99,29 +103,31 @@ Quedan fuera la integración con pasarelas reales, el acceso de los clientes a l
 | FR-96 | `LogActividad` (autor nulo), `NotificacionInterna` | Fallos de procesos automáticos tras agotar los reintentos. |
 | CU-10, UR-05 | `LeoncitosManager.actualizarConfiguracionGlobal`, `ConfiguracionGlobal` (`cambiarIdioma`, `aplicarPlazosNuevos`, `restaurarValoresPredeterminados`) | Plazo de pago, serie, retención, idioma y días de aviso. |
 
+---
+
 ## Consistencia con otros modelos
 
 No toda clase implica una tabla, ni toda tabla procede de una clase. La correspondencia con el modelo físico de datos es la siguiente:
 
-| Elemento del diagrama de clases | Elemento del E-R | Observación |
-| --- | --- | --- |
-| `Usuario`, `Cliente`, `Contacto`, `Factura`, `Pago`, `ConfiguracionGlobal`, `LogActividad`, `NotificacionInterna` | Tabla homónima | Clases de entidad con tabla propia. |
-| `LeoncitosManager` | Sin tabla | Clase de control. Sus composiciones no se traducen a claves foráneas. |
-| `Cliente.etiquetas` | `Cliente_Etiqueta` | Atributo multivaluado llevado a tabla aparte. |
-| `Contacto.email`, `Contacto.telefono` | `Contacto_Email`, `Contacto_Telefono` | Atributos multivaluados llevados a tabla aparte. |
-| `ConfiguracionGlobal.diasAvisoImpago` | `Configuracion_DiasAviso` | Atributo multivaluado; `ConfiguracionGlobal` tiene una sola fila. |
-| Asociación `clientesAsignados` (* — *) | `Usuario_Cliente_Asignado` | Tabla intermedia con clave compuesta por email y NIF. |
-| Asociación `responsable` | `Cliente.email_responsable` | Clave foránea obligatoria. |
-| Agregación `Cliente` — `Factura` | `Factura.nif_cliente` | Clave foránea obligatoria. |
-| Composición `Factura` — `Pago` | `Pago.id_factura` | Clave foránea obligatoria; un pago sin factura no se inserta. |
-| Asociación `creador` | `Factura.email_creador` | Clave foránea obligatoria. |
-| Asociación reflexiva `original` | `Factura.id_factura_original` | Clave foránea opcional hacia la propia tabla. |
-| Asociación `autorCambio` | Clave foránea opcional en `LogActividad` | Nula cuando actúa un proceso automático. |
-| Asociación `destinatario` | Clave foránea obligatoria en `NotificacionInterna` | Bandeja de cada usuario. |
-| `Nif`, `Email`, `Movil` | Columnas simples | Los tipos primitivos no generan tabla. |
-| `Direccion` | Columnas de `Cliente` | El tipo de dato se aplana en sus campos. |
-| `Dinero` | Dos columnas: importe `DECIMAL(10,2)` y divisa | Por ejemplo `rango_facturacion_*` en `Cliente`. |
-| Enumeraciones | Restricciones `CHECK` | Rol, estados, tipo de factura e idioma. |
+| Elemento del diagrama de clases                                                                                   | Elemento del E-R                                   | Observación                                                           |
+| ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------- |
+| `Usuario`, `Cliente`, `Contacto`, `Factura`, `Pago`, `ConfiguracionGlobal`, `LogActividad`, `NotificacionInterna` | Tabla homónima                                     | Clases de entidad con tabla propia.                                   |
+| `LeoncitosManager`                                                                                                | Sin tabla                                          | Clase de control. Sus composiciones no se traducen a claves foráneas. |
+| `Cliente.etiquetas`                                                                                               | `Cliente_Etiqueta`                                 | Atributo multivaluado llevado a tabla aparte.                         |
+| `Contacto.email`, `Contacto.telefono`                                                                             | `Contacto_Email`, `Contacto_Telefono`              | Atributos multivaluados llevados a tabla aparte.                      |
+| `ConfiguracionGlobal.diasAvisoImpago`                                                                             | `Configuracion_DiasAviso`                          | Atributo multivaluado; `ConfiguracionGlobal` tiene una sola fila.     |
+| Asociación `clientesAsignados`                                                                                    | `Usuario_Cliente_Asignado`                         | Tabla intermedia con clave compuesta por email y NIF.                 |
+| Asociación `responsable`                                                                                          | `Cliente.email_responsable`                        | Clave foránea obligatoria.                                            |
+| Agregación `Cliente`-`Factura`                                                                                    | `Factura.nif_cliente`                              | Clave foránea obligatoria.                                            |
+| Composición `Factura`-`Pago`                                                                                      | `Pago.id_factura`                                  | Clave foránea obligatoria; un pago sin factura no se inserta.         |
+| Asociación `creador`                                                                                              | `Factura.email_creador`                            | Clave foránea obligatoria.                                            |
+| Asociación reflexiva `original`                                                                                   | `Factura.id_factura_original`                      | Clave foránea opcional hacia la propia tabla.                         |
+| Asociación `autorCambio`                                                                                          | Clave foránea opcional en `LogActividad`           | Nula cuando actúa un proceso automático.                              |
+| Asociación `destinatario`                                                                                         | Clave foránea obligatoria en `NotificacionInterna` | Bandeja de cada usuario.                                              |
+| `Nif`, `Email`, `Movil`                                                                                           | Columnas simples                                   | Los tipos primitivos no generan tabla.                                |
+| `Direccion`                                                                                                       | Columnas de `Cliente`                              | El tipo de dato se aplana en sus campos.                              |
+| `Dinero`                                                                                                          | Dos columnas: importe `DECIMAL(10,2)` y divisa     | Por ejemplo `rango_facturacion_*` en `Cliente`.                       |
+| Enumeraciones                                                                                                     | Restricciones `CHECK`                              | Rol, estados, tipo de factura e idioma.                               |
 
 Otras correspondencias:
 
