@@ -148,40 +148,233 @@
 
 ## 3. Modelo físico de datos (Entidad–Relación)
 
-Insertad aquí el diagrama exportado de `diagramas/modelo_datos.puml` y la explicación de `documentacion/modelo_datos.md`. Incluid relaciones, PK/FK y decisiones relevantes.
+#### Diagrama E/R (Entidad-Relación) exportado
 
+X
+
+#### Documentación del diagrama E/R
+
+X
 
 
 ---
 
 ## 4. Diagrama UML de clases
 
-Insertad el diagrama exportado de `diagramas/diagrama_clases.puml` y la explicación de `documentacion/diagrama_clases.md`.
+#### Diagrama de clases exportado
 
+![Diagrama de clases](diagramas/diagrama_clases.png)
+
+#### Documentación del diagrama de clases
+
+X
 
 
 ---
 
 ## 5. Diagramas UML de secuencia
 
-Insertad los diagramas exportados de `diagramas/secuencias/` y la explicación de `documentacion/diagramas_secuencia.md`. Identificad el caso de uso y el escenario que cubre cada uno.
+### CU-01: Autenticación de usuario
 
+#### Diagrama CU-01 exportado
+
+![Diagrama de secuencia 1](diagramas/secuencias/CU-01.png)
+
+#### Documentación del diagrama CU-01
+
+1. El `Actor` solicita iniciar sesión (`solicitarInicioSesion()`) y `LeoncitosManager` le muestra los campos de correo corporativo y contraseña (`mostrarCampos(email, contraseña)`).
+
+2. Dentro de un bucle (`loop`) hasta lograr autenticarse, el `Actor` envía sus credenciales (`iniciarSesion(email, contraseña)`) y `LeoncitosManager` delega la validación de dominio (`@turbineh`) y credenciales en `Usuario` (`autenticar()`).
+
+3. **Si son válidas (`alt`):** `Usuario` devuelve `True`, `LeoncitosManager` registra el acceso en `LogActividad` (`registrarAccion()`) y concede acceso al sistema (`concederAcceso()`).
+
+4. **Si son incorrectas (`else`):** `Usuario` devuelve `False`, se registra el intento fallido en `LogActividad` (`registrarAccion()`) y se muestra el error `"Usuario o contraseña incorrectos"`.
+
+---
+
+### CU-02: Consulta del historial de facturas
+
+#### Diagrama CU-02 exportado
+
+![Diagrama de secuencia 2](diagramas/secuencias/CU-02.png)
+
+#### Documentación del diagrama CU-02
+
+1. El `Actor` elige entre consultar el historial de un cliente concreto (`consultarHistorialFactura(cliente)`) o el historial global de sus clientes asignados (`consultarHistorialFactura()`).
+
+2. **Si hay error de BD o el cliente no existe (`alt`):** `LeoncitosManager` crea una incidencia en `NotificacionInterna` (`crear(errorConsulta)`), registra el fallo en `LogActividad` (`registrarAccion()`) y devuelve un listado vacío con el error (`mostrarError(historialVacío)`).
+
+3. **Si la consulta es correcta (`else`):** se muestra el listado de facturas (`mostrarListadoFacturas()`). De forma opcional (`opt`), el usuario puede filtrar por estado, tipo y fecha (`filtrar(estado, tipo, fecha)`).
+
+4. Tras seleccionar una factura (`seleccionarFactura(factura)`), el usuario puede opcionalmente (`opt`) descargar su PDF (`descargarPDF(factura)`) o comprobar su estado de pago (`consultarEstadoPago(factura)`), en cuyo caso `LeoncitosManager` consulta a la `Entidad Bancaria` (`consultarPago()`) y verifica el estado interno en `Factura` (`getEstado()`). Finalmente, se registra la consulta en `LogActividad` (`registrarAccion()`).
+
+---
+
+### CU-03: Generación de facturas
+
+#### Diagrama CU-03 exportado
+
+![Diagrama de secuencia 3](diagramas/secuencias/CU-03.png)
+
+#### Documentación del diagrama CU-03
+
+1. El `Actor` abre el generador desde el perfil de un cliente (`abrirGeneradorFactura(cliente)`) y `LeoncitosManager` comprueba los permisos en `Usuario` (`isAllowed()`). Si no tiene permisos (`alt`), devuelve `errorAcceso()`.
+
+2. Con permisos (`else`), se muestra el formulario con los datos autocompletados del cliente (`mostrarFormulario(datosCliente)`). El usuario elige entre crear una factura rectificativa vinculada a la original (`generarFacturaRectificativa(facturaOriginal)`) o una puntual/extraordinaria (`generarFacturaPuntual() / generarFacturaExtraordinaria()`).
+
+3. Opcionalmente (`opt`), si cierra sin emitir, se guarda como borrador en `Factura` (`guardarBorrador()`).
+
+4. Al emitir (`emitirFacturaIndiv()`), se comprueba si requiere aprobación (`reqAprobacion()`). En caso afirmativo (`opt`), se crea una solicitud en `NotificacionInterna` (`crear(solicitudAprobacion)`) y se verifica su aprobación (`isAprobada()`).
+
+5. **Si falla el guardado en BD (`alt`):** se crea una alerta en `NotificacionInterna` (`crear(errorEmision)`), se audita en `LogActividad` (`registrarAccion()`) y se notifica `"Emisión cancelada"`.
+
+6. **Si se guarda correctamente (`else`):** `LeoncitosManager` avisa al `Sistema Notificaciones` (`enviarNotificacionesCobro()`), registra la emisión en `LogActividad` (`registrarAccion()`) y confirma al usuario (`confirmarEmision()`).
+
+---
+
+### CU-04: Modificación de preferencias de pago
+
+#### Diagrama CU-04 exportado
+
+![Diagrama de secuencia 4](diagramas/secuencias/CU-04.png)
+
+#### Documentación del diagrama CU-04
+
+1. El `Actor` solicita actualizar las condiciones de pago o tarifa de un cliente (`modificarPreferenciasDePago(cliente, datos)`).
+
+2. `LeoncitosManager` verifica los permisos mediante `Usuario.isAllowed()`. Si devuelve `False`, retorna `errorAcceso()`.
+
+3. Si devuelve `True`, en caso de tratarse de un descuento extraordinario o precio pactado (`opt`), se genera una solicitud en `NotificacionInterna` (`crear(solicitudAprobacion)`).
+
+4. `LeoncitosManager` actualiza los datos en `Cliente` (`actualizarPreferencias()`), deja traza en `LogActividad` (`registrarAccion()`) y confirma los cambios al usuario (`confirmarCambios()`).
+
+---
+
+### CU-05: Consulta de documentación
+
+#### Diagrama CU-05 exportado
+
+![Diagrama de secuencia 5](diagramas/secuencias/CU-05.png)
+
+#### Documentación del diagrama CU-05
+
+1. El `Actor` selecciona la pestaña de ayuda/documentación desde el menú principal (`accederDocumentacion()`).
+
+2. `LeoncitosManager` recupera y muestra la guía de uso del sistema (`mostrarDocumentacion()`), sin alterar el estado ni los registros del sistema.
+
+---
+
+### CU-06: Acceso al dashboard de facturación
+
+#### Diagrama CU-06 exportado
+
+![Diagrama de secuencia 6](diagramas/secuencias/CU-06.png)
+
+#### Documentación del diagrama CU-06
+
+1. El `Actor` (Administrador/SuperAdministrador/Lector) solicita acceder al dashboard (`accederDashboard()`) y `LeoncitosManager` consulta el rol del usuario en `Usuario` (`getRole()`), que devuelve el rol correspondiente (`rol`).
+
+2. **Si es Administrador o SuperAdministrador (`alt`):** `LeoncitosManager` genera el informe financiero (`generarReporteDashboard()`), registra la consulta en `LogActividad` (`registrarAccion()`) y devuelve el informe al usuario (`mostrarReporteFinanciero()`).
+
+3. **Si es Lector (`else`):** `LeoncitosManager` deniega el acceso al dashboard y comunica el resultado al usuario (`accesoDenegado()`), sin generar el informe financiero.
+
+---
+
+### CU-07: Gestión de usuarios del sistema
+
+#### Diagrama CU-07 exportado
+
+![Diagrama de secuencia 7](diagramas/secuencias/CU-07.png)
+
+#### Documentación del diagrama CU-07
+
+1. El `Actor` (Administrador/SuperAdministrador) elige entre crear un nuevo usuario (`darAltaUsuario(email, pass, rol)`) o editar uno existente (`alt`).
+
+2. **Si crea un usuario (`alt`):** `LeoncitosManager` genera una nueva instancia de `Usuario` mediante un mensaje de creación (`create`). De forma opcional (`opt`), el administrador puede asignar clientes al usuario recién creado (`asignarClientes(usuario, listaClientes)`).
+
+3. **Si edita un usuario existente (`else`):** `LeoncitosManager` solicita el listado de usuarios (`listarUsuarios()`), muestra los resultados (`mostrarListado()`) y permite modificar los datos del usuario seleccionado (`modificarUsuario(usuario, nuevosDatos)`).
+
+4. **Si se produce un error al guardar en BD (`alt`):** `LeoncitosManager` crea una incidencia en `NotificacionInterna` (`crear(errorActualizacion)`), registra el fallo en `LogActividad` (`registrarAccion()`) y muestra el mensaje `"Operación cancelada"` (`mostrarError()`).
+
+5. **Si el guardado es correcto (`else`):** `LeoncitosManager` registra la operación en `LogActividad` (`registrarAccion()`) y confirma el resultado al usuario (`confirmarOperacion()`).
+
+---
+
+### CU-08: Gestión de clientes
+
+#### Diagrama CU-08 exportado
+
+![Diagrama de secuencia 8](diagramas/secuencias/CU-08.png)
+
+#### Documentación del diagrama CU-08
+
+1. El `Actor` (Administrador/SuperAdministrador) elige entre editar o dar de baja un cliente existente, crear un cliente manualmente o importar clientes mediante un archivo CSV (`alt`).
+
+2. **Si edita o da de baja un cliente (`alt`):** `LeoncitosManager` solicita el listado de clientes (`listarClientes()`), muestra los resultados (`mostrarListadoClientes()`) y permite modificar los datos o solicitar la baja (`modificarCliente() / darBajaCliente()`). De forma opcional (`opt`), se pueden gestionar los contactos del cliente existente (`añadirContacto() / quitarContacto()`) mediante la instancia `clienteExistente:Cliente`.
+
+3. **Si crea un cliente manualmente (`else`):** el actor introduce los datos correspondientes (`darAltaCliente(datos)`) y `LeoncitosManager` genera una nueva instancia `nuevoCliente:Cliente` mediante un mensaje de creación (`crearCliente(datos)`).
+
+4. **Si importa clientes mediante CSV (`else`):** el actor selecciona y envía el archivo (`importarClientesCSV(archivo)`). Si el formato es inválido (`alt`), `LeoncitosManager` muestra el error `"Formato CSV incorrecto"`. Si el formato es válido (`else`), ejecuta internamente el proceso de importación y creación de clientes (`crearClientesDesdeCSV(archivo)`).
+
+5. **Si la operación es válida, pero se produce un error al guardar en BD (`alt`):** `LeoncitosManager` crea una incidencia en `NotificacionInterna` (`crear(errorCliente)`), registra el fallo en `LogActividad` (`registrarAccion()`) y muestra el mensaje `"Operación cancelada"`.
+
+6. **Si la operación es válida y el guardado es correcto (`else`):** `LeoncitosManager` registra la operación en `LogActividad` (`registrarAccion()`) y confirma el resultado al usuario (`confirmarGuardado()`).
+
+---
+
+### CU-09: Consulta historial de modificaciones
+
+#### Diagrama CU-09 exportado
+
+![Diagrama de secuencia 9](diagramas/secuencias/CU-09.png)
+
+#### Documentación del diagrama CU-09
+
+1. El `Actor` (Administrador/SuperAdministrador) solicita consultar el historial de modificaciones (`consultarHistorialModificaciones()`).
+
+2. `LeoncitosManager` solicita los registros almacenados a `LogActividad` (`getLog()`), recibe el listado de modificaciones (`listaLogs`) y muestra los resultados ordenados cronológicamente (`mostrarLogsCronologicos()`).
+
+3. De forma opcional (`opt`), el usuario puede filtrar los registros por usuario y rango de fechas (`filtrarLogs(usuario, rangoFechas)`). `LeoncitosManager` devuelve los resultados correspondientes (`mostrarLogsFiltrados()`).
+
+4. Finalmente, `LeoncitosManager` registra la consulta realizada en `LogActividad` (`registrarAccion()`).
+
+---
+
+### CU-10: Modificación de configuración global
+
+#### Diagrama CU-10 exportado
+
+![Diagrama de secuencia 10](diagramas/secuencias/CU-10.png)
+
+#### Documentación del diagrama CU-10
+
+1. El `Actor` (SuperAdministrador) accede a la configuración global (`accederConfiguracionGlobal()`) y `LeoncitosManager` muestra los parámetros actuales del sistema (`mostrarParametros()`).
+
+2. El actor solicita modificar los parámetros (`actualizarConfiguracionGlobal(nuevosParametros)`). `LeoncitosManager` pausa internamente las acciones del sistema (`pausarAccionesSistema()`) y solicita a `ConfiguracionGlobal` aplicar los nuevos valores (`aplicarCambios()`).
+
+3. **Si se produce un error al actualizar (`alt`):** `ConfiguracionGlobal` devuelve el resultado de error (`error`), `LeoncitosManager` solicita restaurar la configuración original (`restaurarConfiguracionOriginal()`), rehabilita el sistema (`rehabilitarSistema()`), registra el fallo en `LogActividad` (`registrarAccion()`) y notifica el error al Superadministrador (`notificarError()`).
+
+4. **Si la actualización es correcta (`else`):** `ConfiguracionGlobal` devuelve el resultado satisfactorio (`ok`), `LeoncitosManager` rehabilita el sistema (`rehabilitarSistema()`), registra la modificación en `LogActividad` (`registrarAccion()`) y confirma la actualización al Superadministrador (`confirmarActualizacion()`).
 
 
 ---
 
 ## 6. Arquitectura y componentes
 
-Insertad el diagrama exportado de `diagramas/arquitectura.puml` y la explicación de `documentacion/arquitectura.md`.
+#### Diagrama de arquitectura exportado
 
+![Diagrama de arquitectura](diagramas/arquitectura.png)
 
+#### Documentación del diagrama de arquitectura
+
+X
 
 
 ---
 
 ## 7. Informe Scrum
 
-## Identificación del equipo
+### Identificación del equipo
 
 | Luis San Juan          | Miembro del equipo |
 | ---------------------- | ------------------ |
@@ -192,7 +385,7 @@ Insertad el diagrama exportado de `diagramas/arquitectura.puml` y la explicació
 | Jesús García           | Miembro del equipo |
 | Fernando Montero       | Miembro del equipo |
 
-## Reuniones del periodo
+### Reuniones del periodo
 
 | Fecha      | Inicio | Duración            | Participantes                                                        | Temas y acuerdos                                                                                                                                                                                                                         |
 | ---------- | ------ | ------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -203,7 +396,7 @@ Insertad el diagrama exportado de `diagramas/arquitectura.puml` y la explicació
 | 24/11/2026 | 20:00  | 1 hora              | - Luis<br>- Daniel L.<br>- Daniel D.<br>- José<br>- Wail<br>- Jesús  | Avances finales sobre diagramas de la Entrega 2: arquitectura, secuencias, clases, y entidad-relación.                                                                                                                                   |
 | 26/11/2026 | 8:45   | 1 hora y 45 minutos | - Luis<br>- Daniel L.<br>- Daniel D.<br>- José<br>- Wail<br>- Jesús  | Retoques finales de coherencia y elaboración de informes y documentación de diagramas.                                                                                                                                                   |
  
-## Estado del product backlog y Sprint backlog
+### Estado del product backlog y Sprint backlog
 
 **Tablero:** [sustituir por URL real](https://example.org/REEMPLAZAR).
 
@@ -227,7 +420,7 @@ Añadir **capturas reales legibles** del estado del tablero en Sprint Planning y
 | Mejorar    | - La definición y estructuración de los requisitos (tanto funcionales como no funcionales).<br>- La resolución de dudas para definir el alcance exacto del sistema de facturación.                                                                                                 |
 | Cambiar    | - Completar la asignación de roles al inicio, ya que fue la única tarea planificada que no se finalizó.<br>- Asegurar la disponibilidad de transcripciones completas de las charlas antes de documentar, para evitar que falten especificaciones.                                  |
 
-## Información de tareas
+### Información de tareas
 
 | Tarea                                                  | Responsable       | Milestone             | Prioridad | Etiqueta     | Descripción / estado                                                            |
 | ------------------------------------------------------ | ----------------- | --------------------- | --------- | ------------ | ------------------------------------------------------------------------------- |
@@ -241,7 +434,7 @@ Añadir **capturas reales legibles** del estado del tablero en Sprint Planning y
 | Diagrama E/R                                           | Jesús             | Entrega 2             | Media     | diagramas    | Elaborar diagramas entidad-relación y documentarlo                              |
 | Restructuración y mantenimiento del repositorio GitHub | Daniel L.         | Entrega 2             | Media     | repositorio  | Restructurar el repo según la plantilla proporcionada para la 2da entrega       |
 
-## Problemas y riesgos
+### Problemas y riesgos
 
 | Sprint   | Problema/riesgo                                                               | Impacto                               | Medida aplicada                                                 | Estado                              |
 | -------- | ----------------------------------------------------------------------------- | ------------------------------------- | --------------------------------------------------------------- | ----------------------------------- |
@@ -250,7 +443,7 @@ Añadir **capturas reales legibles** del estado del tablero en Sprint Planning y
 | Sprint 2 | Diagramas de secuencia en formato `.mdj` (`.puml` requerido)                  | Requisito necesario para la Entrega 2 | Pudimos pasarlos a PlantUML empleando extensiones y ayuda de IA | Terminado                           |
 | Sprint 2 | Confusión sobre qué evidencias presentar exactamente en `Entrega2/evidencias` | Duda no resuelta para la Entrega 2    | Presentar capturas de commits y branches de GitKraken y GitHub  | Confirmación pendiente del profesor |
 
-## Revisión y retrospectiva
+### Revisión y retrospectiva
 
 - **Logros:**
 	- Primera definición de funciones y métodos del sistema para el diagrama de clases.
