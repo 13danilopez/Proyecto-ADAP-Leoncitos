@@ -109,4 +109,4 @@ La notación gráfica no valida nada por sí sola, así que dejamos por escrito 
 - **Descuentos y precios pactados (FR-45).** No tienen entidad propia. Suponemos que se reflejan en el importe de una factura extraordinaria sujeta a aprobación.
 - **Quién aprueba una factura extraordinaria.** No se guarda en Factura, se puede saber por el log. Se podría añadir `email_aprobador` si hace falta.
 - **Claves naturales.** Usuario usa su email y Cliente su NIF como clave primaria. Si alguno cambia hay que propagarlo con `ON UPDATE CASCADE`. Preferimos esto a claves artificiales para no complicar el modelo.
-- **Tipos de datos.** La divisa es un código ISO 4217 (por ejemplo EUR) y los importes son `DECIMAL(10,2)`.
+- **Tipos de datos.** La divisa es un código (por ejemplo EUR) y los importes son `DECIMAL(10,2)`.
