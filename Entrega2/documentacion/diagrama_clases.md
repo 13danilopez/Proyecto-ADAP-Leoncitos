@@ -120,7 +120,7 @@ No toda clase implica una tabla, ni toda tabla procede de una clase. La correspo
 | Asociación `destinatario` | Clave foránea obligatoria en `NotificacionInterna` | Bandeja de cada usuario. |
 | `Nif`, `Email`, `Movil` | Columnas simples | Los tipos primitivos no generan tabla. |
 | `Direccion` | Columnas de `Cliente` | El tipo de dato se aplana en sus campos. |
-| `Dinero` | Dos columnas: importe `DECIMAL(10,2)` y divisa ISO 4217 | Por ejemplo `rango_facturacion_*` en `Cliente`. |
+| `Dinero` | Dos columnas: importe `DECIMAL(10,2)` y divisa | Por ejemplo `rango_facturacion_*` en `Cliente`. |
 | Enumeraciones | Restricciones `CHECK` | Rol, estados, tipo de factura e idioma. |
 
 Otras correspondencias:
