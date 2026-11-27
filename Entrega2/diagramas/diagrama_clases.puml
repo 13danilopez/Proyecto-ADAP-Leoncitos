@@ -173,7 +173,7 @@ Factura "1" *-- "0..*" Pago
 Cliente "1" o-- "0..*" Factura
 
 Factura "0..*" --> "1" Usuario : +creador
-Factura "0..1" --> "0..1" Factura : +original
+Factura "0..1" --> "0..*" Factura : +original
 Usuario "1" <-- "0..*" NotificacionInterna : +destinatario
 Usuario "1" <-- "0..*" LogActividad : +autorCambio
 
