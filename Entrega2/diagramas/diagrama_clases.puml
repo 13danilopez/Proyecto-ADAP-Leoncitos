@@ -87,6 +87,7 @@ class Usuario {
   + emailCorporativo: Email
   + contrasenaHash: String
   + rol: RolUsuario
+  + activo: boolean
   + cambiarContrasena()
   + verificarContrasena()
 }
@@ -102,6 +103,10 @@ class Cliente {
   + tipoPlan: String
   + rangoFacturacionAnual: Dinero
   + estado: EstadoCliente
+  + facturaRecurrente: boolean
+  + motivoPausa: String[0..1]
+  + fechaReactivacionPrevista: Date[0..1]
+  + fechaBaja: Date[0..1]
   + solicitarBaja()
   + pausarSuscripcion()
 }
@@ -155,6 +160,8 @@ class LogActividad {
   + fechaHora: Date
   + accion: String
   + detalleModificacion: String
+  + tipoEntidad: String[0..1]
+  + idEntidad: String[0..1]
 }
 
 class NotificacionInterna {
@@ -175,7 +182,7 @@ Cliente "1" o-- "0..*" Factura
 Factura "0..*" --> "1" Usuario : +creador
 Factura "0..1" --> "0..*" Factura : +original
 Usuario "1" <-- "0..*" NotificacionInterna : +destinatario
-Usuario "1" <-- "0..*" LogActividad : +autorCambio
+Usuario "0..1" <-- "0..*" LogActividad : +autorCambio
 
 Usuario "1" -- "0..*" Cliente : +responsable
 Usuario "0..*" -- "0..*" Cliente : +clientesAsignados
