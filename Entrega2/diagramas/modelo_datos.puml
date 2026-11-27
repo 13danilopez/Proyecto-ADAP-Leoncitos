@@ -1,82 +1,215 @@
 @startuml
+skinparam shadowing false
+skinparam linetype ortho
+hide circle
 
-entity "Usuario" as usr {
-  * email_corporativo : VARCHAR(30) <<PK>>
-  * contraseña : VARCHAR(50)
-  * rol : VARCHAR(20) <<CHECK: Lector | Administrador | SuperAdministrador>>
+' Convención: "*" = atributo obligatorio (NOT NULL); sin "*" = opcional (NULL)
+
+entity "Usuario" as usuario {
+  *email_corporativo : VARCHAR(100) <<PK>>
+  --
+  *contrasena_hash : VARCHAR(255)
+  *rol : VARCHAR(20) <<CHECK: Lector | Administrador | SuperAdministrador>>
+  *activo : BOOLEAN <<DEFAULT: TRUE>>
 }
 
-entity "NofiticacionInterna" as noti {
-  * fecha : Date
-  * motivo : VARCHAR(200)
-  * elemento_relacionado_id : VARCHAR(20)
-  * estado : VARCHAR(10) <<CHECK: Pendiente | EnRevisión | Resuelta>>
-}
-
-entity "LogActividad" as LogA {
-  * fecha_hora : DateTime
-  * acción : VARCHAR(100)
-  detalle_modificación : VARCHAR(100)
-}
-
-entity "Cliente" as clie {
-  nif : VARCHAR(20) <<PK>>
-  nombre_comercial : VARCHAR(50)
-  razón_social : VARCHAR(50)
-  provincia : VARCHAR(50)
-  calle : VARCHAR(50)
-  numero : INTEGER
-  bloque : INTEGER
-  piso : VARCHAR(5)
-  etiquetas : 
+entity "Cliente" as cliente {
+  *nif : VARCHAR(20) <<PK>>
+  --
+  *email_responsable : VARCHAR(100) <<FK>>
+  *nombre_comercial : VARCHAR(100)
+  *razon_social : VARCHAR(100)
+  *direccion_calle : VARCHAR(100)
+  *direccion_numero : INTEGER
+  direccion_piso : VARCHAR(20)
+  *direccion_ciudad : VARCHAR(100)
+  *direccion_pais : VARCHAR(50)
   departamento : VARCHAR(50)
-  inicio_plan : Date
-  tipo_plan : VARCHAR(20)
-  cantidad_facturada : INTEGER
-  divisa : VARCHAR(30)
-  estado_cliente : VARCHAR (20) <<CHECK: Activo | EnPausa | BajaSolicitada | Baja>>
+  *inicio_plan : DATE
+  *tipo_plan : VARCHAR(50)
+  *facturacion_recurrente : BOOLEAN
+  *rango_facturacion_cantidad : DECIMAL(10,2)
+  *rango_facturacion_divisa : VARCHAR(10)
+  *estado : VARCHAR(20) <<CHECK: Activo | EnPausa | BajaSolicitada | Baja>>
+  motivo_pausa : VARCHAR(255)
+  fecha_reactivacion_prevista : DATE
+  fecha_baja : DATE
 }
 
-entity "ConfiguracionGlobal" as config {
-  plazo_pago_dias_defecto : INTEGER <<DEFAULT: 5>>
-  dias_aviso_impago : INTEGER
-  formato_serie_factura : VARCHAR(50)
-  retención_datos_años : INTEGER <<DEFAULT: 5>>
-  idioma_principal : VARCHAR(10) <<CHECK: ES | EN | FR | DE>>
+entity "Cliente_Etiqueta" as cliente_etiqueta {
+  *nif_cliente : VARCHAR(20) <<FK>> <<PK>>
+  *etiqueta : VARCHAR(50) <<PK>>
 }
 
-/'
-ESTO SON EJEMPLOS DE CLASES Q HABIA PUESTOS EN EL DOCUMENTO, SI QUEREIS AL TERMINAR PODEIS BORRARLO
-ES SOLO PARA Q VEAIS UN EJEMPLO DE COMO VAN LAS COSAS
+entity "Usuario_Cliente_Asignado" as usr_clie {
+  *email_usuario : VARCHAR(100) <<FK>> <<PK>>
+  *nif_cliente : VARCHAR(20) <<FK>> <<PK>>
+}
 
-entity "CLIENTE" as Cliente {
-  * id_cliente : INTEGER <<PK>>
+entity "Contacto" as contacto {
+  *id_contacto : INTEGER <<PK>>
   --
-  * nombre : VARCHAR(100)
+  *nif_cliente : VARCHAR(20) <<FK>>
+  *nombre : VARCHAR(100)
 }
 
-
-entity "PEDIDO" as Pedido {
-  * id_pedido : INTEGER <<PK>>
+entity "Contacto_Email" as contacto_email {
+  *id_email : INTEGER <<PK>>
   --
-  * id_cliente : INTEGER <<FK>>
-  * fecha : DATE
+  *id_contacto : INTEGER <<FK>>
+  *direccion_email : VARCHAR(100)
 }
 
-
-entity "LINEA_PEDIDO" as Linea {
-  * id_linea : INTEGER <<PK>>
+entity "Contacto_Telefono" as contacto_telefono {
+  *id_telefono : INTEGER <<PK>>
   --
-  * id_pedido : INTEGER <<FK>>
-  * cantidad : INTEGER
+  *id_contacto : INTEGER <<FK>>
+  *numero : VARCHAR(20)
 }
 
+entity "Factura" as factura {
+  *id_factura : INTEGER <<PK>>
+  --
+  *nif_cliente : VARCHAR(20) <<FK>>
+  *email_creador : VARCHAR(100) <<FK>>
+  id_factura_original : INTEGER <<FK>>
+  *serie : VARCHAR(50)
+  numero : INTEGER
+  *fecha_emision : DATE
+  *fecha_vencimiento : DATE
+  *importe_cantidad : DECIMAL(10,2)
+  *importe_divisa : VARCHAR(10)
+  *idioma : VARCHAR(10) <<CHECK: ES | EN | FR | DE>>
+  *tipo : VARCHAR(20) <<CHECK: Puntual | Recurrente | Extraordinaria | Rectificativa>>
+  *estado : VARCHAR(20) <<CHECK: Borrador | Pendiente | Pagada | VencidaImpagada | Incobrable | Condonada>>
+  *requiere_aprobacion : BOOLEAN
+  estado_aprobacion : VARCHAR(20) <<CHECK: Pendiente | Aprobada | Rechazada>>
+}
 
-Cliente ||--o{ Pedido : realiza
-Pedido ||--|{ Linea : contiene
-note bottom of Linea
-  Ejemplo: cantidad > 0.
-  Explicar restricciones en el .md.
+entity "Pago" as pago {
+  *id_transaccion : VARCHAR(100) <<PK>>
+  --
+  *id_factura : INTEGER <<FK>>
+  *fecha_pago : DATE
+  *importe_recibido_cantidad : DECIMAL(10,2)
+  *importe_recibido_divisa : VARCHAR(10)
+  *pasarela_origen : VARCHAR(50)
+}
+
+entity "NotificacionCliente" as notif_cliente {
+  *id_notif_cliente : INTEGER <<PK>>
+  --
+  *id_factura : INTEGER <<FK>>
+  *destino : VARCHAR(100)
+  *canal : VARCHAR(20) <<CHECK: Email | WhatsApp>>
+  *tipo : VARCHAR(30) <<CHECK: EmisionFactura | Recordatorio | AvisoImpago>>
+  *fecha_hora : DATETIME
+  *estado : VARCHAR(20) <<CHECK: Pendiente | Enviada | Fallida>>
+  *intentos : INTEGER <<DEFAULT: 0>>
+}
+
+entity "LogActividad" as log_actividad {
+  *id_log : INTEGER <<PK>>
+  --
+  email_autor : VARCHAR(100) <<FK>>
+  *fecha_hora : DATETIME
+  *accion : VARCHAR(100)
+  tipo_entidad : VARCHAR(30) <<CHECK: Cliente | Factura | Pago | Usuario | Configuracion>>
+  id_entidad : VARCHAR(50)
+  detalle_modificacion : TEXT
+}
+
+entity "NotificacionInterna" as notificacion {
+  *id_notificacion : INTEGER <<PK>>
+  --
+  *email_destinatario : VARCHAR(100) <<FK>>
+  *fecha : DATETIME
+  *motivo : VARCHAR(255)
+  tipo_elemento : VARCHAR(30) <<CHECK: Cliente | Factura | Pago | Usuario>>
+  elemento_relacionado_id : VARCHAR(50)
+  *estado : VARCHAR(20) <<CHECK: Pendiente | EnRevision | Resuelta>>
+}
+
+entity "ConfiguracionGlobal" as configuracion {
+  *id_configuracion : INTEGER <<PK>>
+  --
+  *plazo_pago_dias_defecto : INTEGER <<DEFAULT: 5>>
+  *formato_serie_factura : VARCHAR(50)
+  *retencion_datos_anios : INTEGER <<DEFAULT: 5>>
+  *idioma_principal : VARCHAR(10) <<CHECK: ES | EN | FR | DE>>
+}
+
+entity "Configuracion_DiasAviso" as config_dias {
+  *id_dia_aviso : INTEGER <<PK>>
+  --
+  *id_configuracion : INTEGER <<FK>>
+  *dia : INTEGER
+}
+
+' --- Relaciones ---
+
+' Usuarios y Clientes
+usuario ||--o{ cliente : "es responsable de"
+usuario ||--o{ usr_clie : "tiene asignado"
+cliente ||--o{ usr_clie : "asignado a"
+cliente ||--o{ cliente_etiqueta : "tiene etiquetas"
+
+' Contactos
+cliente ||--|{ contacto : "posee"
+contacto ||--o{ contacto_email : "tiene emails"
+contacto ||--o{ contacto_telefono : "tiene telefonos"
+
+' Facturación
+cliente ||--o{ factura : "asociada a"
+usuario ||--o{ factura : "creador"
+factura |o--o{ factura : "es rectificada por"
+factura ||--o{ pago : "contiene"
+factura ||--o{ notif_cliente : "genera avisos"
+
+' Trazabilidad y Alertas
+usuario |o--o{ log_actividad : "autor de"
+usuario ||--o{ notificacion : "recibe"
+
+' Configuración de arrays
+configuracion ||--o{ config_dias : "dias_aviso_impago"
+
+
+' --- Restricciones (Constraints) ---
+
+note bottom of factura
+  <b>Restricciones de Factura:</b>
+  - { UNIQUE (serie, numero) }
+  - { estado = 'Borrador' IMPLIES numero IS NULL }
+  - { estado <> 'Borrador' IMPLIES numero IS NOT NULL }
+  - { tipo = 'Rectificativa' IMPLIES id_factura_original IS NOT NULL }
+  - { tipo = 'Rectificativa' IMPLIES serie distinta de la serie de la factura original }
+  - { tipo = 'Extraordinaria' IMPLIES requiere_aprobacion = TRUE AND estado_aprobacion IS NOT NULL }
+  - { requiere_aprobacion = FALSE IMPLIES estado_aprobacion IS NULL }
+  - { estado = 'Condonada' IMPLIES carece de pagos }
+  - { estado = 'Pagada' IMPLIES tiene pagos asociados }
 end note
-'/
+
+note bottom of pago
+  <b>Restricciones de Pago:</b>
+  - { id_transaccion unico: un evento repetido de la pasarela se descarta }
+  - { importe_recibido distinto del importe de la factura IMPLIES se genera NotificacionInterna y la factura no pasa a 'Pagada' automaticamente }
+end note
+
+note bottom of cliente
+  <b>Restricciones de Cliente:</b>
+  - { estado = 'Baja' IMPLIES NO tener facturas en estado 'Pendiente' o 'VencidaImpagada' }
+  - { estado = 'Baja' IMPLIES fecha_baja IS NOT NULL (borrado logico, se conserva retencion_datos_anios) }
+  - { estado IN ('EnPausa','Baja','BajaSolicitada') IMPLIES no se generan facturas recurrentes }
+end note
+
+note bottom of usr_clie
+  <b>Restricciones de Permisos:</b>
+  - { Solo los usuarios con rol 'Lector' o 'Administrador' figuran en esta tabla de asignaciones }
+end note
+
+note bottom of configuracion
+  <b>Restricciones de Configuracion:</b>
+  - { Entidad singleton: una unica fila (id_configuracion = 1) }
+  - { Configuracion_DiasAviso: UNIQUE (id_configuracion, dia) }
+end note
 @enduml
