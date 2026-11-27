@@ -5,7 +5,9 @@
 
 > Columna **N/M** indica si el requisito es "***Nuevo***" o "***Modificado***".
 
-#### Requisitos funcionales
+### Actualización de requisitos
+
+#### a) Requisitos funcionales
 
 | ID    | N/M | Cambio                                                                                                        | Motivo                                                                                                | Impacto en Entrega 2 | Validación / pendiente               |
 | ----- | --- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------ |
@@ -32,7 +34,7 @@
 | FR-95 | N   | Sistema de logs                                                                                               | Trazabilidad de acciones de usuarios dentro del sistema                                               | Arquitectura         | Confirmar con el cliente si procede. |
 | FR-96 | N   | Flujo de reintentos automáticos del sistema ante fallos recuperables (hasta un máximo establecido)            | Dotar al sistema de una cierta capacidad de resistencia ante errores                                  | Clases               | Confirmar con el cliente si procede. |
 
-#### Requisitos no funcionales
+#### b) Requisitos no funcionales
 
 | ID     | N/M | Cambio                                                                                                              | Motivo                                                                      | Impacto en Entrega 2 | Validación / pendiente               |
 | ------ | --- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | -------------------- | ------------------------------------ |
@@ -43,7 +45,11 @@
 | NFR-13 | M   | Limitación de acceso a datos personales de clientes a los usuarios adecuados                                        | Aclarar restricción de acceso a datos de clientes                           | -                    | Confirmado.                          |
 | NFR-14 | M   | Conservación temporal de objetos del sistema (clientes, usuarios y facturas) acordes al marco legal correspondiente | Aclarar la conservación de información del sistema según la normativa legal | -                    | Confirmado.                          |
 
-#### Especificaciones de casos de uso
+#### c) Demás requisitos
+
+> El resto de apartados de los requisitos (ej: 6. Suposiciones y 8. Trazabilidad) han sido modificados únicamente para que los nuevos IDs de los requisitos funcionales/no-funcionales sean coherentes con la actualización.
+
+### Especificaciones de casos de uso
 
 > Ausentes en la primera entrega debido a un despiste del equipo. Añadidas a la actualización de la primera entrega debidamente, acordes con el diagrama de casos de uso general que sí se presentó.
 
@@ -60,9 +66,7 @@
 | CU-09 | N   | Consulta de historial de modificaciones          | Ausente en entrega 1 | ER, clases, secuencias y arquitectura | Confirmar con el cliente si procede. |
 | CU-10 | N   | Modificación de configuración global del sistema | Ausente en entrega 1 | ER, clases, secuencias y arquitectura | Confirmar con el cliente si procede. |
 
----
-
-### Anotaciones
+### Anotaciones originales
 
 > Anotaciones que tomó el equipo tras la primera entrega, en la que basamos la mayoría de cambios listados arriba.
 
