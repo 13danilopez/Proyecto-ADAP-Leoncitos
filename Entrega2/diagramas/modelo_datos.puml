@@ -1,29 +1,82 @@
 @startuml
-' Ejemplo ficticio de diagrama físico (IE / Crow's Foot)
-title Modelo físico de datos · ejemplo
-hide circle
-skinparam linetype ortho
+
+entity "Usuario" as usr {
+  * email_corporativo : VARCHAR(30) <<PK>>
+  * contraseña : VARCHAR(50)
+  * rol : VARCHAR(20) <<CHECK: Lector | Administrador | SuperAdministrador>>
+}
+
+entity "NofiticacionInterna" as noti {
+  * fecha : Date
+  * motivo : VARCHAR(200)
+  * elemento_relacionado_id : VARCHAR(20)
+  * estado : VARCHAR(10) <<CHECK: Pendiente | EnRevisión | Resuelta>>
+}
+
+entity "LogActividad" as LogA {
+  * fecha_hora : DateTime
+  * acción : VARCHAR(100)
+  detalle_modificación : VARCHAR(100)
+}
+
+entity "Cliente" as clie {
+  nif : VARCHAR(20) <<PK>>
+  nombre_comercial : VARCHAR(50)
+  razón_social : VARCHAR(50)
+  provincia : VARCHAR(50)
+  calle : VARCHAR(50)
+  numero : INTEGER
+  bloque : INTEGER
+  piso : VARCHAR(5)
+  etiquetas : 
+  departamento : VARCHAR(50)
+  inicio_plan : Date
+  tipo_plan : VARCHAR(20)
+  cantidad_facturada : INTEGER
+  divisa : VARCHAR(30)
+  estado_cliente : VARCHAR (20) <<CHECK: Activo | EnPausa | BajaSolicitada | Baja>>
+}
+
+entity "ConfiguracionGlobal" as config {
+  plazo_pago_dias_defecto : INTEGER <<DEFAULT: 5>>
+  dias_aviso_impago : INTEGER
+  formato_serie_factura : VARCHAR(50)
+  retención_datos_años : INTEGER <<DEFAULT: 5>>
+  idioma_principal : VARCHAR(10) <<CHECK: ES | EN | FR | DE>>
+}
+
+/'
+ESTO SON EJEMPLOS DE CLASES Q HABIA PUESTOS EN EL DOCUMENTO, SI QUEREIS AL TERMINAR PODEIS BORRARLO
+ES SOLO PARA Q VEAIS UN EJEMPLO DE COMO VAN LAS COSAS
+
 entity "CLIENTE" as Cliente {
   * id_cliente : INTEGER <<PK>>
   --
   * nombre : VARCHAR(100)
 }
+
+
 entity "PEDIDO" as Pedido {
   * id_pedido : INTEGER <<PK>>
   --
   * id_cliente : INTEGER <<FK>>
   * fecha : DATE
 }
+
+
 entity "LINEA_PEDIDO" as Linea {
   * id_linea : INTEGER <<PK>>
   --
   * id_pedido : INTEGER <<FK>>
   * cantidad : INTEGER
 }
+
+
 Cliente ||--o{ Pedido : realiza
 Pedido ||--|{ Linea : contiene
 note bottom of Linea
   Ejemplo: cantidad > 0.
   Explicar restricciones en el .md.
 end note
+'/
 @enduml

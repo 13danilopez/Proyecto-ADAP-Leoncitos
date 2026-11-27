@@ -1,0 +1,39 @@
+@startuml
+title CU-08 -- Gestión de clientes
+
+actor "Personal autorizado(Admin/SuperAdmin)"
+participant "LeoncitosManager"
+participant "clienteExistente : Cliente"
+participant "NotificacionInterna"
+participant "LogActividad"
+participant "nuevoCliente : Cliente"
+
+alt Tipo de gestión de clientes [Editar / Dar de baja cliente]
+    "Personal autorizado(Admin/SuperAdmin)" -> "LeoncitosManager" : listarClientes()
+    "LeoncitosManager" --> "Personal autorizado(Admin/SuperAdmin)" : mostrarListadoClientes()
+    "Personal autorizado(Admin/SuperAdmin)" -> "LeoncitosManager" : modificarCliente() / darBajaCliente()
+    opt Gestión de contactos [Gestionar contactos]
+        "LeoncitosManager" -> "clienteExistente : Cliente" : añadirContacto() / quitarContacto()
+    end
+else [Crear cliente manual]
+    "Personal autorizado(Admin/SuperAdmin)" -> "LeoncitosManager" : darAltaCliente(datos)
+    "LeoncitosManager" -> "nuevoCliente : Cliente" : crearCliente(datos) <<create>>
+else [Importar por CSV]
+    "Personal autorizado(Admin/SuperAdmin)" -> "LeoncitosManager" : importarClientesCSV(archivo)
+    alt Validación del archivo CSV [Formato CSV inválido]
+        "LeoncitosManager" --> "Personal autorizado(Admin/SuperAdmin)" : mostrarError("Formato CSV incorrecto")
+    else [Formato CSV válido]
+        "LeoncitosManager" -> "LeoncitosManager" : crearClientesDesdeCSV(archivo)
+    end
+end
+
+alt Resultado del guardado [Operación válida y error al guardar en BD]
+    "LeoncitosManager" -> "NotificacionInterna" : crear(errorCliente)
+    "LeoncitosManager" -> "LogActividad" : registrarAccion()
+    "LeoncitosManager" --> "Personal autorizado(Admin/SuperAdmin)" : mostrarError("Operación cancelada")
+else [Operación válida y guardado correcto]
+    "LeoncitosManager" -> "LogActividad" : registrarAccion()
+    "LeoncitosManager" --> "Personal autorizado(Admin/SuperAdmin)" : confirmarGuardado()
+end
+
+@enduml
