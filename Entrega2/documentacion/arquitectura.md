@@ -1,6 +1,10 @@
+# Arquitectura y componentes
+
 ## Vista representada
 
 Vista de despliegue: unidades de software ejecutables, los nodos donde se ejecutan y los protocolos entre ellos. La organización interna de cada componente está en el diagrama de clases (apartado 4).
+
+---
 
 ## Responsabilidades
 
@@ -11,6 +15,8 @@ Vista de despliegue: unidades de software ejecutables, los nodos donde se ejecut
 | API Backend *(contenedor Docker)* | Reglas de negocio y casos de uso. Es el despliegue de `LeoncitosManager`: autenticación y permisos por rol (CU-01), gestión de usuarios y clientes (CU-07, CU-08), facturación (CU-03), dashboard (CU-06), configuración global (CU-10) y los procesos automáticos de cobro y reintentos (FR-96). Envía las notificaciones, tanto la bandeja interna (FR-61, FR-63) como los avisos al cliente, y escribe la traza en `LogActividad` (FR-95) | Facturas_Cliente_Bundle, Validador_Pago, SQL Base de Datos |
 | SQL Base de Datos *(host propio)* | Persistencia del modelo del apartado 3. Aplica las claves, las restricciones `CHECK` y los disparadores descritos allí | API Backend |
 | Validador_Pago *(pasarela externa simulada)* | Simulación de Stripe/Revolut (FR-47). Responde cuando la API consulta el estado de un cobro y notifica los pagos recibidos | API Backend |
+
+---
 
 ## Justificación y alternativas
 
@@ -43,6 +49,8 @@ Vista de despliegue: unidades de software ejecutables, los nodos donde se ejecut
 - Sondear la pasarela periódicamente en vez de recibir su confirmación. Más sencillo, pero retrasa la detección de cobros.
 - Notificaciones como componente independiente. Aislaría los reintentos de FR-96, a cambio de una pieza más que desplegar y vigilar.
 
+---
+
 ## Trazabilidad
 
 | CU / Requisitos | Componentes que cooperan | Observación |
@@ -59,6 +67,8 @@ Vista de despliegue: unidades de software ejecutables, los nodos donde se ejecut
 | FR-47, FR-51, FR-61 | Validador_Pago → API Backend → SQL Base de Datos | Proceso automático de cobro, sin intervención del navegador. |
 | FR-61, FR-63 | API Backend → SQL Base de Datos → Facturas_Cliente_Bundle | La bandeja se persiste como `NotificacionInterna` y el usuario la consulta desde la interfaz. |
 | FR-96 | API Backend → SQL Base de Datos | Agotados los reintentos, la API crea la notificación interna y lo anota en el log. |
+
+---
 
 ## Consistencia con otros modelos
 
