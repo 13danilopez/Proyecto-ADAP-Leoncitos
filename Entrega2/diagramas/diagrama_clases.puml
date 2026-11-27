@@ -1,25 +1,198 @@
 @startuml
-title Diagrama UML de clases · ejemplo
 skinparam classAttributeIconSize 0
+
+class Nif <<primitiveType>> {
+  + nif: String
+}
+class Email <<primitiveType>> {
+  + direccion: String
+}
+class Movil <<primitiveType>> {
+  + num: String
+}
+class Direccion <<dataType>> {
+  + calle: String
+  + num: int
+  + piso: String
+  + ciudad: String
+  + pais: String
+}
+class Dinero <<primitiveType>> {
+  + cantidad: double
+  + divisa: Moneda
+}
+
+enum EstadoCliente {
+  Activo
+  EnPausa
+  BajaSolicitada
+  Baja
+}
+enum EstadoFactura {
+  Borrador
+  Pendiente
+  Pagada
+  VencidaImpagada
+  Incobrable
+  Condonada
+}
+enum TipoFactura {
+  Puntual
+  Recurrente
+  Extraordinaria
+  Rectificativa
+}
+enum EstadoAprobacion {
+  Pendiente
+  Aprobada
+  Rechazada
+}
+enum EstadoNotificacion {
+  Pendiente
+  EnRevision
+  Resuelta
+}
+enum Idioma {
+  ES
+  EN
+  FR
+  DE
+}
+enum RolUsuario {
+  Lector
+  Administrador
+  SuperAdministrador
+}
+
+class LeoncitosManager <<control>> {
+  + iniciarSesion()
+  + darAltaCliente()
+  + importarClientesCSV()
+  + modificarCliente()
+  + darBajaCliente()
+  + darAltaUsuario()
+  + modificarUsuario()
+  + darBajaUsuario()
+  + generarFacturas()
+  + modificarPreferenciasDePago()
+  + consultarFacturas()
+  + consultarHistorialModificaciones()
+  + generarReporteDashboard()
+  + actualizarConfiguracionGlobal()
+  + procesarPagosSimulados()
+  + enviarNotificacionesCobro()
+}
+
+class Usuario {
+  + emailCorporativo: Email
+  + contrasenaHash: String
+  + rol: RolUsuario
+  + cambiarContrasena()
+  + verificarContrasena()
+}
+
 class Cliente {
-  - id: int
-  - nombre: String
-  + crearPedido(): Pedido
+  + nif: Nif
+  + nombreComercial: String
+  + razonSocial: String
+  + direccionFiscal: Direccion
+  + etiquetas: String[*]
+  + departamento: String[0..1]
+  + inicioPlan: Date
+  + tipoPlan: String
+  + rangoFacturacionAnual: Dinero
+  + estado: EstadoCliente
+  + solicitarBaja()
+  + pausarSuscripcion()
 }
-class Pedido {
-  - id: int
-  - fecha: Date
-  + agregarLinea(producto: String, cantidad: int): void
-  + confirmar(): boolean
+
+class Contacto {
+  + nombre: String
+  + email: Email[*]
+  + telefono: Movil[*]
+  + agregarEmail()
+  + eliminarEmail()
+  + agregarTelefono()
+  + eliminarTelefono()
 }
-class LineaPedido {
-  - producto: String
-  - cantidad: int
+
+class Factura {
+  + serie: String
+  + numero: int[0..1]
+  + fechaEmision: Date
+  + fechaVencimiento: Date
+  + importe: Dinero
+  + idioma: Idioma
+  + tipo: TipoFactura
+  + estado: EstadoFactura
+  + requiereAprobacion: boolean
+  + estadoAprobacion: EstadoAprobacion[0..1]
+  + emitir()
+  + registrarPago()
+  + marcarComoVencida()
+  + condonar()
 }
-Cliente "1" -- "0..*" Pedido : realiza
-Pedido "1" *-- "1..*" LineaPedido : contiene
-note right of Pedido
-  La composición expresa que las
-  líneas forman parte de un pedido.
+
+class Pago {
+  + idTransaccion: String
+  + fechaPago: Date
+  + importeRecibido: Dinero
+  + pasarelaOrigen: String
+}
+
+class ConfiguracionGlobal {
+  + plazoPagoDiasDefecto: int = 5
+  + diasAvisoImpago: int[*]
+  + formatoSerieFactura: String
+  + retencionDatosAnios: int = 5
+  + idiomaPrincipal: Idioma
+  + cambiarIdioma()
+  + aplicarPlazosNuevos()
+  + restaurarValoresPredeterminados()
+}
+
+class LogActividad {
+  + fechaHora: Date
+  + accion: String
+  + detalleModificacion: String
+}
+
+class NotificacionInterna {
+  + fecha: Date
+  + motivo: String
+  + elementoRelacionadoID: String
+  + estado: EstadoNotificacion
+  + actualizarEstado()
+}
+
+LeoncitosManager "1" *-- "*" Cliente
+LeoncitosManager "1" *-- "*" Usuario
+LeoncitosManager "1" *-- "1" ConfiguracionGlobal
+Cliente "1" *-- "1..*" Contacto
+Factura "1" *-- "0..*" Pago
+Cliente "1" o-- "0..*" Factura
+
+Factura "0..*" --> "1" Usuario : +creador
+Factura "0..1" --> "0..1" Factura : +original
+Usuario "1" <-- "0..*" NotificacionInterna : +destinatario
+Usuario "1" <-- "0..*" LogActividad : +autorCambio
+
+Usuario "1" -- "0..*" Cliente : +responsable
+Usuario "0..*" -- "0..*" Cliente : +clientesAsignados
+
+note top of Factura
+  { Factura.estado = Borrador implies Factura.numero = null }
+  { Factura.tipo = Rectificativa implies Factura.original != null }
+  { Factura.tipo = Extraordinaria implies Factura.requiereAprobacion = true and Factura.estadoAprobacion != null }
 end note
+
+note bottom of Pago
+  { Factura.estado = Condonada implies Pago->isEmpty() }
+  { Factura.estado = Pagada implies Pago->notEmpty() }
+end note
+
+note on link
+  { Usuario.clientesAsignados->notEmpty() implies (Usuario.rol = Lector or Usuario.rol = Administrador) }
+end note
+
 @enduml

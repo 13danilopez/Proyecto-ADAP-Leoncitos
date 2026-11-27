@@ -1,17 +1,45 @@
-@startuml
-title Arquitectura por componentes · ejemplo
-skinparam componentStyle rectangle
-actor Cliente
-component "Interfaz web" as UI
-component "Servicio de pedidos" as S
-component "Repositorio de pedidos" as R
-database "Base de datos" as DB
-Cliente --> UI : utiliza
-UI --> S : solicita operaciones
-S --> R : persistencia
-R --> DB : consultas / transacciones
-note right of S
-  Responsabilidad: reglas
-  de negocio de pedidos.
-end note
+@startuml diagrama_despliegue
+' Diagrama de despliegue - App de facturas
+
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam nodesep 260
+skinparam ranksep 170
+skinparam linetype ortho
+
+node "Web_Cliente_Browser" as browser {
+  artifact "Facturas_Cliente_Bundle" as bundle
+}
+
+node "Web_Servidor_Host" as host {
+  node "Contenedor Docker" as docker {
+    artifact "Frontend Build_Estatico" as frontend
+    artifact "API Backend" as api
+  }
+}
+
+node "Host Base Datos" as dbhost {
+  artifact "SQL Base de Datos" as db
+}
+
+node "Pasarela Pago (externo)" as pasarela {
+  artifact "Validador_Pago" as validador
+}
+
+' --- Caminos de comunicación (la flecha indica quién inicia) ---
+bundle -down-> frontend   : «HTTPS»\nestático
+bundle "«HTTPS» JSON :443" -down-> api
+api    -down-> db         : «TCP/IP»\n:5432 SQL
+bundle -left-> validador  : «SDK Pasarela»
+api    -left-> validador  : «HTTPS» TLS 1.2+
+validador -right-> "«HTTPS» confirmación (webhook)" api
+
+' Coloca la pasarela a la izquierda del servidor
+pasarela -[hidden]right- host
+
+legend bottom
+  El cliente solicita por HTTPS; el servidor le envía los archivos
+  estáticos y, a partir de ahí, el cliente se comunica con la API.
+endlegend
+
 @enduml

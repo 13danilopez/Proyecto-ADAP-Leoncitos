@@ -1,0 +1,29 @@
+@startuml
+title CU-02 — Consulta del historial de facturas
+
+actor "Actor"
+participant "LeoncitosManager"
+participant "Factura"
+participant "Entidad Bancaria"
+participant "NotificacionInterna"
+participant "LogActividad"
+
+"Actor" -> "LeoncitosManager" : consultarHistorialFactura(cliente)
+"Actor" -> "LeoncitosManager" : consultarHistorialFactura()
+"LeoncitosManager" -> "NotificacionInterna" : crear(errorConsulta)
+"LeoncitosManager" -> "LogActividad" : registrarAccion()
+"LeoncitosManager" --> "Actor" : mostrarError(historialVacío)
+"LeoncitosManager" --> "Actor" : mostrarListadoFacturas()
+"Actor" -> "LeoncitosManager" : filtrar(estado, tipo, fecha)
+"LeoncitosManager" --> "Actor" : mostrarFacturasFiltradas()
+"Actor" -> "LeoncitosManager" : seleccionarFactura(factura)
+"Actor" -> "LeoncitosManager" : descargarPDF(factura)
+"LeoncitosManager" --> "Actor" : archivoPDF
+"Actor" -> "LeoncitosManager" : consultarEstadoPago(factura)
+"LeoncitosManager" -> "Entidad Bancaria" : consultarPago()
+"Entidad Bancaria" --> "LeoncitosManager" : estadoPago
+"LeoncitosManager" -> "Factura" : getEstado()
+"LeoncitosManager" --> "Actor" : mostrarEstadoPago()
+"Actor" -> "LogActividad" : registrarAccion()
+
+@enduml

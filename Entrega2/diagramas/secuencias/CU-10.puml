@@ -1,0 +1,28 @@
+@startuml
+title CU-10 -- Modificación de configuración global
+
+actor "SuperAdmin"
+participant "LeoncitosManager"
+participant "LogActividad"
+participant "ConfiguracionGlobal"
+
+"SuperAdmin" -> "LeoncitosManager" : accederConfiguraciónGlobal()
+"LeoncitosManager" --> "SuperAdmin" : mostrarParametros()
+"SuperAdmin" -> "LeoncitosManager" : actualizarConfiguracionGlobal(nuevosParametros)
+"LeoncitosManager" -> "LeoncitosManager" : pausarAccionesSistema()
+"LeoncitosManager" -> "ConfiguracionGlobal" : aplicarCambios()
+
+alt Resultado de actualización [Error al actualizar]
+    "ConfiguracionGlobal" --> "LeoncitosManager" : error
+    "LeoncitosManager" -> "ConfiguracionGlobal" : restaurarConfiguracionOriginal()
+    "LeoncitosManager" -> "LeoncitosManager" : rehabilitarSistema()
+    "LeoncitosManager" -> "LogActividad" : registrarAccion()
+    "LeoncitosManager" --> "SuperAdmin" : notificarError()
+else [Actualización correcta]
+    "ConfiguracionGlobal" --> "LeoncitosManager" : ok
+    "LeoncitosManager" -> "LeoncitosManager" : rehabilitarSistema()
+    "LeoncitosManager" -> "LogActividad" : registrarAccion()
+    "LeoncitosManager" --> "SuperAdmin" : confirmarActualizacion()
+end
+
+@enduml

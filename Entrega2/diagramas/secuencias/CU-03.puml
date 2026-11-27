@@ -1,0 +1,32 @@
+@startuml
+title CU-03 — Generación de facturas
+
+actor "Actor"
+participant "LogActividad"
+participant "LeoncitosManager"
+participant "Usuario"
+participant "Factura"
+participant "NotificacionInterna"
+participant "Sistema Notificaciones"
+
+"Actor" -> "LeoncitosManager" : abrirGeneradorFactura(cliente)
+"LeoncitosManager" -> "Usuario" : isAllowed()
+"Usuario" --> "LeoncitosManager" : False
+"LeoncitosManager" --> "Actor" : errorAcceso()
+"Usuario" --> "LeoncitosManager" : True
+"LeoncitosManager" --> "Actor" : mostrarFormulario(datosCliente)
+"Actor" -> "LeoncitosManager" : generarFacturaRectificativa(facturaOriginal)
+"Actor" -> "LeoncitosManager" : generarFacturaPuntual() / generarFacturaExtraordinaria()
+"LeoncitosManager" -> "Factura" : guardarBorrador()
+"Actor" -> "LeoncitosManager" : emitirFacturaIndiv()
+"LeoncitosManager" -> "Factura" : reqAprobacion()
+"LeoncitosManager" -> "NotificacionInterna" : crear(solicitudAprobacion)
+"LeoncitosManager" -> "Factura" : isAprobada()
+"LeoncitosManager" -> "NotificacionInterna" : crear(errorEmision)
+"LeoncitosManager" -> "LogActividad" : registrarAccion()
+"LeoncitosManager" --> "Actor" : mostrarError("Emisión cancelada")
+"LeoncitosManager" -> "Sistema Notificaciones" : enviarNotificacionesCobro()
+"LeoncitosManager" -> "LogActividad" : registrarAccion()
+"LeoncitosManager" --> "Actor" : confirmarEmision()
+
+@enduml

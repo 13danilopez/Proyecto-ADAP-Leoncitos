@@ -1,0 +1,31 @@
+@startuml
+title CU-07 -- Gestión de usuarios del sistema
+
+actor "Personal autorizado(Admin/SuperAdmin)"
+participant "LeoncitosManager"
+participant "Usuario"
+participant "NotificacionInterna"
+participant "LogActividad"
+
+alt Tipo de gestión de usuarios [Crear nuevo usuario]
+    "Personal autorizado(Admin/SuperAdmin)" -> "LeoncitosManager" : darAltaUsuario(email, pass, rol)
+    "LeoncitosManager" -> "Usuario" : create <<create>>
+    opt Asignación de clientes [Asignar Clientes]
+        "Personal autorizado(Admin/SuperAdmin)" -> "LeoncitosManager" : asignarClientes(usuario, listaClientes)
+    end
+else [Editar usuario existente]
+    "Personal autorizado(Admin/SuperAdmin)" -> "LeoncitosManager" : listarUsuarios()
+    "LeoncitosManager" --> "Personal autorizado(Admin/SuperAdmin)" : mostrarListado()
+    "Personal autorizado(Admin/SuperAdmin)" -> "LeoncitosManager" : modificarUsuario(usuario, nuevosDatos)
+end
+
+alt Resultado del guardado [Error al guardar en BD]
+    "LeoncitosManager" -> "NotificacionInterna" : crear(errorActualizacion)
+    "LeoncitosManager" -> "LogActividad" : registrarAccion()
+    "LeoncitosManager" --> "Personal autorizado(Admin/SuperAdmin)" : mostrarError("Operación cancelada")
+else [Guardado correcto]
+    "LeoncitosManager" -> "LogActividad" : registrarAccion()
+    "LeoncitosManager" --> "Personal autorizado(Admin/SuperAdmin)" : confirmarOperacion()
+end
+
+@enduml

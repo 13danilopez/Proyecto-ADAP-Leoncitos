@@ -1,0 +1,21 @@
+@startuml
+title CU-06 -- Acceso al dashboard de facturación
+
+actor "Admin/SuperAdmin/Lector"
+participant "LeoncitosManager"
+participant "Usuario"
+participant "LogActividad"
+
+"Admin/SuperAdmin/Lector" -> "LeoncitosManager" : accederDashboard()
+"LeoncitosManager" -> "Usuario" : getRole()
+"Usuario" --> "LeoncitosManager" : rol
+
+alt Control de acceso [Administrador o SuperAdministrador]
+    "LeoncitosManager" -> "LeoncitosManager" : generarReporteDashboard()
+    "LeoncitosManager" -> "LogActividad" : registrarAccion()
+    "LeoncitosManager" --> "Admin/SuperAdmin/Lector" : mostrarReporteFinanciero()
+else [Lector]
+    "LeoncitosManager" --> "Admin/SuperAdmin/Lector" : accesoDenegado()
+end
+
+@enduml

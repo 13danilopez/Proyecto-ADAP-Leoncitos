@@ -1,0 +1,10 @@
+@startuml
+title CU-05 — Consulta de documentación de uso
+
+actor "Actor"
+participant "LeoncitosManager"
+
+"Actor" -> "LeoncitosManager" : accederDocumentacion()
+"LeoncitosManager" --> "Actor" : mostrarDocumentacion()
+
+@enduml

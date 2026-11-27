@@ -1,0 +1,21 @@
+@startuml
+title CU-04 — Modificación de preferencias de pagos (Provisional)
+
+actor "Actor"
+participant "LeoncitosManager"
+participant "Usuario"
+participant "Cliente"
+participant "NotificacionInterna"
+participant "LogActividad"
+
+"Actor" -> "LeoncitosManager" : modificarPreferenciasDePago(cliente, datos)
+"LeoncitosManager" -> "Usuario" : isAllowed()
+"Usuario" --> "LeoncitosManager" : False
+"LeoncitosManager" --> "Actor" : errorAcceso()
+"Usuario" --> "LeoncitosManager" : True
+"LeoncitosManager" -> "NotificacionInterna" : crear(solicitudAprobacion)
+"LeoncitosManager" -> "Cliente" : actualizarPreferencias()
+"LeoncitosManager" -> "LogActividad" : registrarAccion()
+"LeoncitosManager" --> "Actor" : confirmarCambios()
+
+@enduml
