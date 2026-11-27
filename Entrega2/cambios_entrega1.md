@@ -1,35 +1,70 @@
+
 # Cambios respecto a la Entrega 1
 
-| Elemento | Cambio | Motivo | Impacto en Entrega 2 | Validación / pendiente |
-|---|---|---|---|---|
-| RF-01 | Aclarar que el pedido tiene al menos una línea (ejemplo). | El modelo necesitaba una cardinalidad definida. | ER, clases y CU-01. | Confirmar con el cliente si procede. |
+> Los principales cambios del diseño de nuestro sistema se ha visto en la actualización y ampliación de los **requisitos funcionales** y **no funcionales**.
 
-**Instrucción:** distinguir cambios ya acordados de hipótesis pendientes. Actualizar las fuentes de `entrega1-actualizada/` en consecuencia.
+> Columna **N/M** indica si el requisito es "***Nuevo***" o "***Modificado***".
 
-### Especificación de Requisitos
+#### Requisitos funcionales
 
-Requisitos a añadir/cambiar:
+| ID    | N/M | Cambio                                                                                                        | Motivo                                                                                                | Impacto en Entrega 2 | Validación / pendiente               |
+| ----- | --- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------ |
+| FR-13 | M   | Contemplar además de las bajas de clientes, las pausas de las suscripciones de su cuenta                      | Funcionalidad que se pedía en la transcripción                                                        | ER, clases y CU-01.  | Confirmar con el cliente si procede. |
+| FR-14 | M   | Definición de más concreta de cómo actúa el sistema ante bajas teniendo aún impagos                           | Evitar ambigüedad, definición vaga                                                                    |                      | Confirmado.                          |
+| FR-17 | N   | Contemplar la división y asignación de clientes por departamentos de la empresa TurbineH                      | Funcionalidad que se pedía en la transcripción                                                        |                      | Confirmado.                          |
+| FR-20 | M   | Indicar que una factura rectificativa no elimina ni sustituye la original. Se usan números de serie distintos | Evitar ambigüedad, definición vaga                                                                    |                      | Confirmado.                          |
+| FR-30 | M   | Especificar que la asignación de estado de pago de una factura se hace mediante un menú con opciones          | Desacoplar error humano para que no se tenga que indicar a mano el estado                             |                      | Confirmado.                          |
+| FR-37 | N   | Contemplar facturas multi-idioma                                                                              | Funcionalidad que se pedía en la transcripción                                                        |                      | Confirmado.                          |
+| FR-38 | N   | Contemplar facturas extraordinarias                                                                           | Funcionalidad que se pedía en la transcripción                                                        |                      | Confirmado.                          |
+| FR-42 | M   | Tener en cuenta impacto de descuentos extraordinarios en cuotas de facturación de clientes                    | Mantener coherencia con otros requisitos                                                              |                      | Confirmar con el cliente si procede. |
+| FR-43 | M   | Inmutabilidad de cuotas anuales de clientes incluso si cambian de rango entre medias                          | Funcionalidad que se pedía en la transcripción                                                        |                      | Confirmado.                          |
+| FR-45 | N   | Contemplar descuentos extraordinarios y precios pactados por la empresa                                       | Funcionalidad que se pedía en la transcripción                                                        |                      | Confirmado.                          |
+| FR-47 | M   | Aclaración de implementación de pasarela Stripe/Revolut como simulada                                         | Evitar ambigüedad, definición vaga                                                                    |                      | Confirmado.                          |
+| FR-48 | M   | Comprobaciones de verificación de facturas antes de marcar como pagada                                        | Añadir verificación de datos de facturas para garantizar su actualización automática correcta         |                      | Confirmar con el cliente si procede. |
+| FR-51 | N   | Acción ante incoherencia de importe de pago de facturas                                                       | Especificar cómo actúa el sistema si se registra un pago con importe distinto al que lista su factura |                      | Confirmar con el cliente si procede. |
+| FR-52 | N   | Contemplar deudas incobrables                                                                                 | Funcionalidad que se pedía en la transcripción                                                        |                      | Confirmado.                          |
+| FR-53 | N   | Contemplar condonaciones de deudas                                                                            | Funcionalidad que se pedía en la transcripción                                                        |                      | Confirmado.                          |
+| FR-61 | M   | Tener en cuenta notificaciones a usuarios del sistema en caso de incoherencia de pagos de facturas            | Mantener coherencia con otros requisitos                                                              |                      | Confirmar con el cliente si procede. |
+| FR-63 | N   | Bandeja de notificaciones de usuarios                                                                         | Proporcionar forma de consulta de solicitudes e incidencias de sus clientes asignados                 |                      | Confirmar con el cliente si procede. |
+| FR-86 | M   | Especificar las funcionalidades del dashboard financiero                                                      | Evitar ambigüedad, definición vaga                                                                    |                      | Confirmar con el cliente si procede. |
+| FR-87 | M   | Especificar reporte de pagos condonados e incobrables en el dashboard                                         | Mantener coherencia con otros requisitos                                                              |                      | Confirmar con el cliente si procede. |
+| FR-89 | N   | Funciones de búsqueda filtrada del dashboard                                                                  | Proporcionar forma de consulta eficaz                                                                 |                      | Confirmar con el cliente si procede. |
+| FR-95 | N   | Sistema de logs                                                                                               | Trazabilidad de acciones de usuarios dentro del sistema                                               |                      | Confirmar con el cliente si procede. |
+| FR-96 | N   | Flujo de reintentos automáticos del sistema ante fallos recuperables (hasta un máximo establecido)            | Dotar al sistema de una cierta capacidad de resistencia ante errores                                  |                      | Confirmar con el cliente si procede. |
 
-- Añadir **facturas multi-idioma**
-- Modificar **FR-40**: factura constante todo el año (no hay cambio de rango entre año)
+#### Requisitos no funcionales
 
-### Casos de Uso y UML
+| ID     | N/M | Cambio                                                                                                              | Motivo                                                                      | Impacto en Entrega 2 | Validación / pendiente               |
+| ------ | --- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | -------------------- | ------------------------------------ |
+| NFR-04 | M   | Especificar características y capacidades de la interfaz web                                                        | Evitar ambigüedad, definición vaga                                          | ER, clases y CU-01.  | Confirmado.                          |
+| NFR-08 | M   | Especificación de mecanismos automáticos fiables y  errores detectables                                             | Evitar ambigüedad, definición vaga                                          |                      | Confirmar con el cliente si procede. |
+| NFR-09 | M   | Especificación de sistema de notificaciones fiable y errores detectables                                            | Evitar ambigüedad, definición vaga                                          |                      | Confirmar con el cliente si procede. |
+| NFR-10 | M   | Especificación de niveles de permiso y flujo de acceso controlado del sistema                                       | Evitar ambigüedad, definición vaga                                          |                      | Confirmado.                          |
+| NFR-13 | M   | Limitación de acceso a datos personales de clientes a los usuarios adecuados                                        | Aclarar restricción de acceso a datos de clientes                           |                      | Confirmado.                          |
+| NFR-14 | M   | Conservación temporal de objetos del sistema (clientes, usuarios y facturas) acordes al marco legal correspondiente | Aclarar la conservación de información del sistema según la normativa legal |                      | Confirmado.                          |
 
-- Hacer los **casos de uso** (se nos olvidó) siguiendo la plantilla "template_casos_uso" que se proporciona en la tarea de la Entrega 1 en el campus.
+#### Especificaciones de casos de uso
 
-- **Más diagramas UML** -> diagrama general (el que ya tenemos) + otros especificados por "*módulos*" (similar al de los Perritos), que podríamos basar en las categorías de requisitos que tenemos para relacionarlos fácilmente.
+> Ausentes en la primera entrega debido a un despiste del equipo. Añadidas a la actualización de la primera entrega debidamente, acordes con el diagrama de casos de uso general que sí se presentó.
 
-### Informe Scrum
-
-Incluir en el informe Scrum de esta entrega:
-
-- Quién hizo qué tareas.
-- Justificación de prioridad de tareas.
-- Conexión con artefactos (que el proceso explique cómo se llegó al resultado final).
+| ID    | N/M | Cambio                                           | Motivo               | Impacto en Entrega 2 | Validación / pendiente               |
+| ----- | --- | ------------------------------------------------ | -------------------- | -------------------- | ------------------------------------ |
+| CU-01 | N   | Autenticación de usuario                         | Ausente en entrega 1 | ER, clases y CU-01.  | Confirmar con el cliente si procede. |
+| CU-02 | N   | Consulta del historial de facturas               | Ausente en entrega 1 |                      | Confirmar con el cliente si procede. |
+| CU-03 | N   | Generación de facturas                           | Ausente en entrega 1 |                      | Confirmar con el cliente si procede. |
+| CU-04 | N   | Modificación de preferencias de pagos            | Ausente en entrega 1 |                      | Confirmar con el cliente si procede. |
+| CU-05 | N   | Consulta de documentación de uso del sistema     | Ausente en entrega 1 |                      | Confirmar con el cliente si procede. |
+| CU-06 | N   | Acceso al dashboard de facturación               | Ausente en entrega 1 |                      | Confirmar con el cliente si procede. |
+| CU-07 | N   | Gestión de usuarios del sistema                  | Ausente en entrega 1 |                      | Confirmar con el cliente si procede. |
+| CU-08 | N   | Gestión de clientes                              | Ausente en entrega 1 |                      | Confirmar con el cliente si procede. |
+| CU-09 | N   | Consulta de historial de modificaciones          | Ausente en entrega 1 |                      | Confirmar con el cliente si procede. |
+| CU-10 | N   | Modificación de configuración global del sistema | Ausente en entrega 1 |                      | Confirmar con el cliente si procede. |
 
 ---
 
-### Otras anotaciones
+### Anotaciones
+
+> Anotaciones que tomó el equipo tras la primera entrega, en la que basamos la mayoría de cambios listados arriba.
 
 - Plantear en algún diagrama/presentación explicativa un **flujo general del proceso de facturas** (e.g. Perritos y Hienitas).
 
@@ -52,6 +87,8 @@ Incluir en el informe Scrum de esta entrega:
 - Distinguir **seguimiento de deudas** del estado de la suscripción del cliente para evitar generar facturas durante una pausa o baja del cliente.
 
 - Facturas extraordinarias.
+
+- Facturas multi-idioma.
 
 - Campo adicional de factura para indicar si está rectificando a una (relacionarla claramente) ó incluir en el propio formato del identificador (e.g. 178239203-1, donde el "-1" indica que es una primera rectificación sobre la original, 178239203).
 
